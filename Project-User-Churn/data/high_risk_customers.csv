@@ -1,0 +1,51 @@
+y_true,churn_probability,churn_prediction,risk_tier,cluster,Tenure,PreferredLoginDevice,CityTier,WarehouseToHome,PreferredPaymentMode,Gender,HourSpendOnApp,NumberOfDeviceRegistered,PreferedOrderCat,SatisfactionScore,MaritalStatus,NumberOfAddress,Complain,OrderAmountHikeFromlastYear,CouponUsed,OrderCount,DaySinceLastOrder,CashbackAmount,rfm_total,rfm_segment,device_per_tenure,cashback_per_order,inactivity_ratio
+1,1.0,1,High Risk,2,0.0,Computer,1,30.0,Cash on Delivery,Male,3.0,4,Fashion,5,Single,2,0,12.0,1.0,1.0,9.0,187.22,7,Hibernating,4.0,93.61,9.0
+1,1.0,1,High Risk,0,7.0,Computer,1,30.0,Debit Card,Male,,3,Mobile,3,Married,4,1,22.0,0.0,1.0,0.0,131.61,7,Recent Customers,0.375,65.805,0.0
+1,1.0,1,High Risk,2,2.0,Mobile,1,9.0,Credit Card,Male,3.0,4,Laptop & Accessory,4,Married,6,0,12.0,2.0,2.0,5.0,173.55,9,Loyal,1.3333333333333333,57.85,1.6666666666666667
+1,1.0,1,High Risk,3,0.0,Mobile,3,19.0,E wallet,Male,3.0,4,Laptop & Accessory,5,Married,6,1,13.0,1.0,2.0,2.0,161.34,10,Loyal,4.0,53.78,2.0
+1,1.0,1,High Risk,0,1.0,Mobile,1,35.0,Credit Card,Male,3.0,3,Laptop & Accessory,5,Divorced,8,1,19.0,0.0,1.0,0.0,166.73,10,Recent Customers,1.5,83.365,0.0
+1,1.0,1,High Risk,2,0.0,Mobile,1,,Cash on Delivery,Male,3.0,4,Mobile,5,Single,7,0,13.0,1.0,1.0,7.0,123.62,4,Hibernating,4.0,61.81,7.0
+1,1.0,1,High Risk,2,0.0,Mobile,1,,Cash on Delivery,Female,3.0,4,Mobile,4,Divorced,6,0,16.0,0.0,1.0,1.0,125.46,6,Recent Customers,4.0,62.73,1.0
+1,1.0,1,High Risk,2,1.0,Mobile,1,8.0,Credit Card,Male,2.0,3,Laptop & Accessory,4,Married,5,0,11.0,0.0,1.0,4.0,148.55,5,Hibernating,1.5,74.275,2.0
+1,1.0,1,High Risk,1,10.0,Mobile,3,16.0,Credit Card,Male,4.0,5,Fashion,1,Single,3,0,17.0,4.0,5.0,,221.19,14,Champions,0.4545454545454545,36.865,
+1,1.0,1,High Risk,2,1.0,Computer,1,16.0,Debit Card,Male,4.0,4,Laptop & Accessory,5,Married,6,0,18.0,1.0,2.0,8.0,178.46,8,Loyal,2.0,59.48666666666667,4.0
+1,1.0,1,High Risk,0,1.0,Mobile,1,35.0,Credit Card,Male,3.0,3,Laptop & Accessory,5,Married,8,1,19.0,1.0,1.0,0.0,166.73,10,Recent Customers,1.5,83.365,0.0
+1,1.0,1,High Risk,1,10.0,Computer,3,15.0,Debit Card,Male,2.0,5,Grocery,3,Married,8,0,11.0,6.0,14.0,,229.36,15,Champions,0.4545454545454545,15.290666666666668,
+0,1.0,1,High Risk,3,1.0,Mobile,3,30.0,E wallet,Female,3.0,5,Laptop & Accessory,1,Married,9,1,20.0,1.0,2.0,1.0,166.57,11,Loyal,2.5,55.52333333333333,0.5
+1,1.0,1,High Risk,2,1.0,Mobile,1,23.0,Debit Card,Female,3.0,2,Mobile Phone,5,Single,3,0,17.0,4.0,16.0,15.0,152.43,8,At Risk,1.0,8.966470588235294,7.5
+1,1.0,1,High Risk,0,1.0,Computer,1,16.0,Credit Card,Male,3.0,5,Mobile Phone,5,Single,2,1,23.0,1.0,2.0,3.0,148.21,7,Hibernating,2.5,49.403333333333336,1.5
+1,1.0,1,High Risk,3,1.0,Mobile,3,27.0,Debit Card,Female,4.0,6,Laptop & Accessory,3,Married,5,1,12.0,1.0,3.0,3.0,170.59,10,Loyal,3.0,42.6475,1.5
+1,1.0,1,High Risk,3,0.0,Mobile,3,9.0,Debit Card,Male,2.0,4,Fashion,2,Divorced,2,1,11.0,3.0,3.0,7.0,203.25,10,Champions,4.0,50.8125,7.0
+1,1.0,1,High Risk,0,,Mobile,1,8.0,Debit Card,Female,3.0,3,Mobile,5,Married,2,1,12.0,1.0,1.0,0.0,120.74,7,Recent Customers,3.0,60.37,0.0
+1,1.0,1,High Risk,0,21.0,Mobile,1,9.0,Debit Card,Male,3.0,4,Others,4,Single,9,1,,6.0,14.0,9.0,317.46,11,Champions,0.1818181818181818,21.164,0.4090909090909091
+1,1.0,1,High Risk,3,1.0,Computer,3,10.0,Credit Card,Female,4.0,4,Mobile Phone,1,Single,3,1,13.0,2.0,2.0,1.0,140.69,7,Recent Customers,2.0,46.89666666666667,0.5
+1,1.0,1,High Risk,2,0.0,Mobile,1,8.0,Credit Card,Male,2.0,3,Mobile Phone,3,Single,7,0,17.0,0.0,2.0,1.0,143.82,8,Recent Customers,3.0,47.94,1.0
+1,1.0,1,High Risk,2,1.0,Computer,1,36.0,Credit Card,Female,3.0,5,Laptop & Accessory,3,Single,3,0,23.0,3.0,4.0,9.0,170.08,8,Loyal,2.5,34.016000000000005,4.5
+1,1.0,1,High Risk,0,0.0,Mobile,1,,Debit Card,Female,3.0,3,Mobile,2,Divorced,2,1,11.0,1.0,1.0,0.0,125.15,7,Recent Customers,3.0,62.575,0.0
+1,1.0,1,High Risk,0,1.0,Mobile,1,9.0,Debit Card,Female,4.0,4,Mobile Phone,5,Married,3,1,13.0,2.0,2.0,1.0,145.74,8,Recent Customers,2.0,48.580000000000005,0.5
+1,1.0,1,High Risk,3,4.0,Mobile,3,26.0,E wallet,Female,,3,Mobile,4,Single,2,1,22.0,0.0,1.0,2.0,131.4,6,Recent Customers,0.6,65.7,0.4
+1,1.0,1,High Risk,2,,Mobile,1,15.0,Debit Card,Male,2.0,3,Mobile,5,Single,4,0,14.0,1.0,1.0,0.0,120.18,7,Recent Customers,3.0,60.09,0.0
+1,1.0,1,High Risk,3,4.0,Mobile,3,32.0,E wallet,Male,3.0,5,Fashion,4,Single,4,1,13.0,2.0,2.0,,215.94,14,Champions,1.0,71.98,
+1,1.0,1,High Risk,0,1.0,Mobile,1,32.0,Debit Card,Male,3.0,4,Mobile Phone,1,Single,3,1,25.0,1.0,2.0,2.0,152.95,9,Hibernating,2.0,50.98333333333333,1.0
+1,1.0,1,High Risk,0,0.0,Computer,1,,Debit Card,Female,2.0,1,Mobile,3,Single,4,1,14.0,0.0,1.0,3.0,124.32,5,Hibernating,1.0,62.16,3.0
+1,1.0,1,High Risk,0,1.0,Mobile,1,13.0,Debit Card,Male,4.0,2,Mobile Phone,5,Married,3,1,22.0,1.0,2.0,1.0,141.01,8,Recent Customers,1.0,47.00333333333333,0.5
+1,1.0,1,High Risk,2,0.0,Computer,1,9.0,Cash on Delivery,Male,,3,Mobile,5,Single,1,0,22.0,0.0,1.0,4.0,131.02,4,Hibernating,3.0,65.51,4.0
+1,1.0,1,High Risk,1,1.0,Computer,2,29.0,UPI,Female,3.0,5,Mobile Phone,4,Married,3,0,13.0,2.0,2.0,1.0,153.63,10,Hibernating,2.5,51.21,0.5
+1,1.0,1,High Risk,3,1.0,Mobile,3,7.0,Credit Card,Female,3.0,5,Mobile Phone,3,Married,8,1,20.0,2.0,2.0,3.0,153.0,8,Hibernating,2.5,51.0,1.5
+1,1.0,1,High Risk,0,2.0,Mobile,1,36.0,Credit Card,Male,4.0,4,Laptop & Accessory,5,Married,9,1,20.0,2.0,2.0,1.0,191.73,12,Loyal,1.3333333333333333,63.91,0.3333333333333333
+1,1.0,1,High Risk,1,0.0,Computer,3,,Cash on Delivery,Female,3.0,5,Mobile,5,Single,1,0,21.0,1.0,1.0,0.0,123.25,7,Recent Customers,5.0,61.625,0.0
+1,1.0,1,High Risk,0,0.0,Mobile,1,,Credit Card,Female,3.0,4,Mobile,5,Single,2,1,15.0,0.0,1.0,0.0,126.0,7,Recent Customers,4.0,63.0,0.0
+1,1.0,1,High Risk,3,1.0,Mobile,3,16.0,E wallet,Female,4.0,4,Laptop & Accessory,5,Single,5,1,18.0,1.0,2.0,4.0,207.24,11,Champions,2.0,69.08,2.0
+1,1.0,1,High Risk,3,14.0,Computer,3,7.0,UPI,Male,3.0,4,Laptop & Accessory,3,Single,5,1,15.0,2.0,2.0,1.0,172.28,11,Loyal,0.2666666666666666,57.42666666666667,0.0666666666666666
+1,1.0,1,High Risk,3,14.0,Mobile,3,35.0,E wallet,Male,3.0,5,Fashion,5,Married,6,1,14.0,3.0,,1.0,233.54,15,Champions,0.3333333333333333,233.54,0.0666666666666666
+1,1.0,1,High Risk,0,1.0,Computer,1,13.0,Debit Card,Female,4.0,5,Mobile Phone,1,Single,3,1,19.0,1.0,2.0,1.0,154.26,11,Loyal,2.5,51.42,0.5
+1,1.0,1,High Risk,2,0.0,Mobile,1,22.0,Debit Card,Female,,1,Mobile,5,Single,2,0,16.0,3.0,15.0,14.0,127.43,7,At Risk,1.0,7.964375,14.0
+1,1.0,1,High Risk,3,3.0,Mobile,3,28.0,E wallet,Male,3.0,4,Laptop & Accessory,3,Divorced,3,1,12.0,1.0,1.0,0.0,163.8,10,Recent Customers,1.0,81.9,0.0
+1,1.0,1,High Risk,1,1.0,Mobile,3,16.0,Debit Card,Male,3.0,5,Mobile Phone,5,Single,9,0,24.0,1.0,2.0,4.0,159.07,9,Loyal,2.5,53.02333333333333,2.0
+1,1.0,1,High Risk,0,0.0,Mobile,1,,Credit Card,Female,3.0,4,Mobile,5,Single,2,1,15.0,1.0,1.0,0.0,126.0,7,Recent Customers,4.0,63.0,0.0
+1,1.0,1,High Risk,2,16.0,Mobile,1,15.0,Credit Card,Male,3.0,5,Laptop & Accessory,4,Divorced,4,0,16.0,8.0,8.0,8.0,174.41,11,Champions,0.2941176470588235,19.378888888888888,0.4705882352941176
+1,1.0,1,High Risk,1,0.0,Mobile,3,22.0,E wallet,Male,3.0,3,Fashion,3,Married,3,0,13.0,1.0,1.0,0.0,181.61,11,Recent Customers,3.0,90.805,0.0
+1,1.0,1,High Risk,2,1.0,Computer,1,36.0,Credit Card,Male,4.0,5,Mobile Phone,4,Single,2,0,12.0,2.0,2.0,5.0,159.79,8,Loyal,2.5,53.26333333333333,2.5
+1,1.0,1,High Risk,2,3.0,Mobile,1,30.0,Credit Card,Male,4.0,4,Mobile Phone,5,Single,2,0,14.0,1.0,2.0,4.0,164.04,9,Loyal,1.0,54.68,1.0
+1,1.0,1,High Risk,0,,Mobile,1,6.0,Debit Card,Female,3.0,5,Mobile,4,Single,8,1,13.0,1.0,3.0,7.0,122.16,7,At Risk,5.0,30.54,7.0
+1,1.0,1,High Risk,0,1.0,Computer,2,30.0,UPI,Female,3.0,4,Fashion,5,Married,11,1,16.0,2.0,2.0,,224.5,14,Champions,2.0,74.83333333333333,
