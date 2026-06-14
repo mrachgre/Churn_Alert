@@ -1,5 +1,9 @@
 """
 Step 6: Modelling — XGBoost + Optuna + CalibratedClassifier + SHAP
+         + Logistic Regression (base & K-Means distance features)
+         + Decision Tree & Random Forest (with K-Means cluster-ID feature)
+         + XGBoost retrained with cluster-ID feature (Strategy B)
+         + Unified model comparison chart
 - ImbPipeline (SMOTE inside CV to prevent leakage)
 - Optuna Bayesian optimisation (30–50 trials)
 - CalibratedClassifierCV (isotonic regression)
@@ -23,6 +27,10 @@ warnings.filterwarnings("ignore")
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
 from sklearn.calibration import CalibratedClassifierCV
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import (accuracy_score, precision_score, recall_score,
                               f1_score, roc_auc_score, average_precision_score,
                               roc_curve, confusion_matrix, ConfusionMatrixDisplay)
@@ -47,6 +55,15 @@ def load_data():
     y_train = pd.read_csv(os.path.join(DATA_DIR, "y_train.csv")).squeeze()
     y_test  = pd.read_csv(os.path.join(DATA_DIR, "y_test.csv")).squeeze()
     return X_train, X_test, y_train, y_test
+
+
+def load_feature_variants():
+    """Load K-Means feature-augmented splits produced by Step 5."""
+    X_train_dist  = pd.read_csv(os.path.join(DATA_DIR, "X_train_dist.csv"))
+    X_test_dist   = pd.read_csv(os.path.join(DATA_DIR, "X_test_dist.csv"))
+    X_train_clust = pd.read_csv(os.path.join(DATA_DIR, "X_train_clust.csv"))
+    X_test_clust  = pd.read_csv(os.path.join(DATA_DIR, "X_test_clust.csv"))
+    return X_train_dist, X_test_dist, X_train_clust, X_test_clust
 
 
 # ── Optuna objective ─────────────────────────────────────────────────────────
@@ -241,32 +258,192 @@ def compute_shap(inner_pipeline, X_test, feature_names):
     return shap_values, shap_df
 
 
+# ═══════════════════════════════════════════════════════════════════════════════
+# Additional models (K-Means Feature Engineering variants)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _youden_threshold(probs, y_test):
+    """Optimal classification threshold via Youden's J statistic."""
+    fpr, tpr, thresholds = roc_curve(y_test, probs)
+    return float(thresholds[np.argmax(tpr - fpr)])
+
+
+def _metrics_dict(name, probs, y_test):
+    """Compute standard evaluation metrics dict for any model."""
+    thr   = _youden_threshold(probs, y_test)
+    preds = (probs >= thr).astype(int)
+    return {
+        "Model":     name,
+        "Threshold": round(thr, 3),
+        "Accuracy":  round(accuracy_score(y_test, preds), 4),
+        "Precision": round(precision_score(y_test, preds, zero_division=0), 4),
+        "Recall":    round(recall_score(y_test, preds, zero_division=0), 4),
+        "F1":        round(f1_score(y_test, preds, zero_division=0), 4),
+        "ROC_AUC":   round(roc_auc_score(y_test, probs), 4),
+        "PR_AUC":    round(average_precision_score(y_test, probs), 4),
+    }
+
+
+def train_logistic_regression(X_train, X_test, y_train, y_test, name="LR-Base"):
+    """
+    Logistic Regression with GridSearch over C.
+    Used for:
+      LR-Base  — standard features (clean baseline)
+      LR-Dist  — standard features + K distance columns (Strategy A)
+    Training data is already SMOTE-balanced; class_weight kept as 'balanced'
+    for robustness against any residual imbalance.
+    """
+    print(f"\n[06] Training {name}…")
+    cv  = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    lr  = LogisticRegression(max_iter=2000, random_state=42, n_jobs=-1,
+                              class_weight="balanced", solver="lbfgs")
+    grid = GridSearchCV(lr, {"C": [0.01, 0.1, 1, 10]},
+                        cv=cv, scoring="roc_auc", n_jobs=-1)
+    grid.fit(X_train, y_train)
+    best_lr = grid.best_estimator_
+    probs   = best_lr.predict_proba(X_test)[:, 1]
+    metrics = _metrics_dict(name, probs, y_test)
+    print(f"[06] {name}  best C={grid.best_params_['C']}  "
+          f"ROC-AUC={metrics['ROC_AUC']}  F1={metrics['F1']}")
+    joblib.dump(best_lr,
+                os.path.join(MODEL_DIR, f"{name.lower().replace('-','_')}_model.pkl"))
+    return metrics, best_lr
+
+
+def train_decision_tree(X_train, X_test, y_train, y_test, name="DT-Clust"):
+    """
+    Decision Tree (Strategy B — with kmeans_cluster_id feature).
+    GridSearch over max_depth and min_samples_leaf.
+    """
+    print(f"\n[06] Training {name}…")
+    cv  = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    dt  = DecisionTreeClassifier(random_state=42, class_weight="balanced")
+    grid = GridSearchCV(
+        dt,
+        {"max_depth": [3, 5, 7, 10, None], "min_samples_leaf": [1, 5, 10]},
+        cv=cv, scoring="roc_auc", n_jobs=-1,
+    )
+    grid.fit(X_train, y_train)
+    best_dt = grid.best_estimator_
+    probs   = best_dt.predict_proba(X_test)[:, 1]
+    metrics = _metrics_dict(name, probs, y_test)
+    print(f"[06] {name}  best={grid.best_params_}  "
+          f"ROC-AUC={metrics['ROC_AUC']}  F1={metrics['F1']}")
+    joblib.dump(best_dt, os.path.join(MODEL_DIR, "dt_clust_model.pkl"))
+    return metrics, best_dt
+
+
+def train_random_forest(X_train, X_test, y_train, y_test, name="RF-Clust"):
+    """
+    Random Forest (Strategy B — with kmeans_cluster_id feature).
+    GridSearch over n_estimators and max_depth.
+    """
+    print(f"\n[06] Training {name}…")
+    cv  = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    rf  = RandomForestClassifier(random_state=42, class_weight="balanced", n_jobs=-1)
+    grid = GridSearchCV(
+        rf,
+        {"n_estimators": [100, 200], "max_depth": [5, 10, None]},
+        cv=cv, scoring="roc_auc", n_jobs=-1,
+    )
+    grid.fit(X_train, y_train)
+    best_rf = grid.best_estimator_
+    probs   = best_rf.predict_proba(X_test)[:, 1]
+    metrics = _metrics_dict(name, probs, y_test)
+    print(f"[06] {name}  best={grid.best_params_}  "
+          f"ROC-AUC={metrics['ROC_AUC']}  F1={metrics['F1']}")
+    joblib.dump(best_rf, os.path.join(MODEL_DIR, "rf_clust_model.pkl"))
+    return metrics, best_rf
+
+
+def train_xgboost_clust(X_train, X_test, y_train, y_test, best_params, name="XGB-Clust"):
+    print(f"\n[06] Training {name} (reusing Optuna params + cluster_id feature)…")
+    xgb = XGBClassifier(
+        **best_params,
+        use_label_encoder=False,
+        eval_metric="logloss",
+        random_state=42,
+        n_jobs=-1,
+    )
+    # KHÔNG fit trước — đưa model chưa fit vào CalibratedClassifierCV
+    calibrated = CalibratedClassifierCV(xgb, method="isotonic", cv=5)
+    calibrated.fit(X_train, y_train)
+
+    probs   = calibrated.predict_proba(X_test)[:, 1]
+    metrics = _metrics_dict(name, probs, y_test)
+    print(f"[06] {name}  ROC-AUC={metrics['ROC_AUC']}  F1={metrics['F1']}")
+    joblib.dump(calibrated, os.path.join(MODEL_DIR, "xgb_clust_model.pkl"))
+    return metrics, calibrated
+
+
+def plot_model_comparison(all_metrics: list):
+    """Grouped bar chart comparing all models across six key metrics."""
+    df   = pd.DataFrame(all_metrics)
+    mets = ["Accuracy", "Precision", "Recall", "F1", "ROC_AUC", "PR_AUC"]
+
+    # Colour palette — one colour per model
+    palette = ["#94a3b8", "#3b82f6", "#6366f1", "#8b5cf6", "#f97316", "#ec4899"]
+    colours = palette[:len(df)]
+
+    fig, axes = plt.subplots(2, 3, figsize=(20, 11))
+    axes = axes.flatten()
+
+    for i, met in enumerate(mets):
+        ax = axes[i]
+        bars = ax.bar(df["Model"], df[met],
+                      color=colours, edgecolor="white", width=0.6)
+        for bar, val in zip(bars, df[met]):
+            ax.text(bar.get_x() + bar.get_width() / 2,
+                    bar.get_height() + 0.005,
+                    f"{val:.4f}", ha="center", fontsize=9, fontweight="bold")
+        # Highlight best
+        best_idx = int(df[met].idxmax())
+        bars[best_idx].set_edgecolor("#ef4444")
+        bars[best_idx].set_linewidth(2.5)
+
+        ax.set_title(met, fontweight="bold", fontsize=12)
+        ax.set_ylim(0, min(1.15, df[met].max() * 1.20))
+        ax.tick_params(axis="x", rotation=25, labelsize=9)
+        ax.grid(axis="y", linestyle="--", alpha=0.4)
+
+    plt.suptitle(
+        "Model Comparison — Impact of K-Means Feature Engineering\n"
+        "(red border = best per metric)",
+        fontsize=14, fontweight="bold",
+    )
+    plt.tight_layout()
+    plt.savefig(os.path.join(OUT_DIR, "06b_model_comparison.png"), dpi=150)
+    plt.close()
+    print("[06] Saved: 06b_model_comparison.png")
+
+    df.to_csv(os.path.join(DATA_DIR, "model_comparison.csv"), index=False)
+    print("[06] Saved: model_comparison.csv")
+    print("\n[06] ── Model Comparison Table ─────────────────────────────────────────")
+    print(df[["Model", "Accuracy", "F1", "ROC_AUC", "PR_AUC"]].to_string(index=False))
+    return df
+
+
 def run_modelling():
     print(f"\n{'='*60}")
-    print("STEP 6: MODELLING (XGBoost + Optuna + SHAP)")
+    print("STEP 6: MODELLING (XGBoost + Optuna + SHAP + Multi-Model Comparison)")
     print(f"{'='*60}")
 
     X_train, X_test, y_train, y_test = load_data()
     feature_names = X_train.columns.tolist()
 
-    # Tune
+    # ── XGBoost (baseline) ──────────────────────────────────────────────────
     best_params = tune_hyperparameters(X_train, y_train, n_trials=N_TRIALS)
-
-    # Train calibrated model
     calibrated, inner_pipeline = train_calibrated_model(X_train, y_train, best_params)
-
-    # Evaluate
     threshold, probs, fpr, tpr = find_optimal_threshold(calibrated, X_test, y_test)
     metrics, preds = evaluate(calibrated, X_test, y_test, threshold, probs, fpr, tpr)
 
-    # Plots
+    # Plots for XGBoost baseline
     plot_roc_curve(fpr, tpr, metrics["ROC_AUC"])
     plot_confusion_matrix(y_test, preds)
     plot_calibration_curve(calibrated, X_test, y_test)
-    # SHAP
     shap_values, shap_df = compute_shap(inner_pipeline, X_test.values, feature_names)
 
-    # Save model + metadata
+    # Save XGBoost artifacts
     joblib.dump(calibrated,     os.path.join(MODEL_DIR, "xgb_model.pkl"))
     joblib.dump(inner_pipeline, os.path.join(MODEL_DIR, "xgb_inner_pipeline.pkl"))
     joblib.dump({
@@ -276,17 +453,50 @@ def run_modelling():
         "feature_names": feature_names,
         "shap_df":       shap_df,
     }, os.path.join(MODEL_DIR, "model_metadata.pkl"))
-
     print(f"[06] Saved: xgb_model.pkl, xgb_inner_pipeline.pkl, model_metadata.pkl")
 
-    # Save predictions
+    # Save predictions (used by Step 7)
     pred_df = pd.DataFrame({
-        "y_true":           y_test.values,
+        "y_true":            y_test.values,
         "churn_probability": probs,
         "churn_prediction":  preds,
     })
     pred_df.to_csv(os.path.join(DATA_DIR, "predictions.csv"), index=False)
     print(f"[06] Saved: predictions.csv")
+
+    # ── Additional models with K-Means features ────────────────────────────
+    print(f"\n[06] ── K-Means Feature Variants ──────────────────────────────────")
+    X_train_dist, X_test_dist, X_train_clust, X_test_clust = load_feature_variants()
+
+    # Logistic Regression — Strategy A (base & distance-feature variants)
+    lr_base_metrics,  _ = train_logistic_regression(
+        X_train, X_test, y_train, y_test, name="LR-Base")
+    lr_dist_metrics,  _ = train_logistic_regression(
+        X_train_dist, X_test_dist, y_train, y_test, name="LR-Dist")
+
+    # Decision Tree & Random Forest — Strategy B (cluster-ID feature)
+    dt_metrics,       _ = train_decision_tree(
+        X_train_clust, X_test_clust, y_train, y_test)
+    rf_metrics,       _ = train_random_forest(
+        X_train_clust, X_test_clust, y_train, y_test)
+
+    # XGBoost — retrained with cluster-ID feature (Strategy B)
+    xgb_clust_metrics, _ = train_xgboost_clust(
+        X_train_clust, X_test_clust, y_train, y_test, best_params)
+
+    # XGBoost base metrics (wrap evaluate() output to same schema)
+    xgb_base_metrics = {"Model": "XGB-Base", **metrics}
+
+    # ── Unified comparison ──────────────────────────────────────────────────
+    all_results = [
+        lr_base_metrics,
+        lr_dist_metrics,
+        dt_metrics,
+        rf_metrics,
+        xgb_base_metrics,
+        xgb_clust_metrics,
+    ]
+    plot_model_comparison(all_results)
 
     return calibrated, metrics, shap_df
 

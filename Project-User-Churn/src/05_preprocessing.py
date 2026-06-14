@@ -5,15 +5,22 @@ Step 5: Preprocessing Pipeline
 - OneHotEncoder (fit on train only)
 - MinMaxScaler + KNNImputer (fit on train only)
 - SMOTE to balance classes
+- K-Means Feature Engineering (Strategy A: distance cols, Strategy B: cluster_id col)
 - Save all fitted transformers as .pkl
 """
 
 import pandas as pd
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 import joblib
 import os
 import warnings
 warnings.filterwarnings("ignore")
+
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
@@ -23,7 +30,9 @@ from imblearn.over_sampling import SMOTE
 RFM_PATH   = os.path.join(os.path.dirname(__file__), "..", "data", "ecommerce_churn_rfm.csv")
 MODEL_DIR  = os.path.join(os.path.dirname(__file__), "..", "models")
 DATA_DIR   = os.path.join(os.path.dirname(__file__), "..", "data")
+OUT_DIR    = os.path.join(os.path.dirname(__file__), "..", "outputs")
 os.makedirs(MODEL_DIR, exist_ok=True)
+os.makedirs(OUT_DIR, exist_ok=True)
 
 
 def load(path=RFM_PATH):
@@ -134,12 +143,134 @@ def run_preprocessing(path=RFM_PATH, random_state=42):
     print(f"[05] Saved: encoder, scaler, imputer | X_train, X_test, y_train, y_test")
     print(f"[05] Feature count after encoding: {X_train_res_df.shape[1]}")
 
+    # ── K-Means Feature Engineering (Strategies A & B) ───────────────────────
+    print(f"\n[05] ── K-Means Feature Engineering ───────────────────────────")
+    optimal_k, _, _ = find_optimal_k(X_train_enc.values, k_range=range(2, 11))
+    optimal_k = max(optimal_k, 3)
+    build_kmeans_features(
+        X_train_pre_smote=X_train_enc,
+        X_train_post_smote=X_train_res_df,
+        X_test_enc=X_test_enc_df,
+        optimal_k=optimal_k,
+    )
+
     return (X_train_res_df, X_test_enc_df,
             y_train_res.reset_index(drop=True),
             y_test.reset_index(drop=True),
             {"encoder": encoder, "scaler": scaler, "imputer": imputer,
              "cat_cols": cat_cols, "num_cols": num_cols,
-             "ohe_feature_names": ohe_feature_names})
+             "ohe_feature_names": ohe_feature_names,
+             "optimal_k": optimal_k})
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# K-Means Feature Engineering helpers
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def find_optimal_k(X_scaled: np.ndarray, k_range=range(2, 11)) -> tuple:
+    """
+    Elbow (WCSS) + Silhouette sweep to select optimal K.
+    Moved here from Step 7 so K is determined BEFORE model training.
+    Saves outputs/05_elbow_silhouette.png as documented justification.
+    """
+    wcss_list, sil_list = [], []
+    for k in k_range:
+        km = KMeans(n_clusters=k, random_state=42, n_init=10)
+        labels = km.fit_predict(X_scaled)
+        wcss_list.append(km.inertia_)
+        sil_list.append(silhouette_score(X_scaled, labels))
+
+    best_k = list(k_range)[int(np.argmax(sil_list))]
+
+    # ── Plot Elbow + Silhouette ───────────────────────────────────────────────
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+    ax1.plot(list(k_range), wcss_list, "o-", color="#3b82f6", linewidth=2, markersize=7)
+    ax1.set_title("Elbow Method (WCSS)", fontweight="bold")
+    ax1.set_xlabel("Number of Clusters (K)")
+    ax1.set_ylabel("WCSS / Inertia")
+    ax1.grid(axis="y", linestyle="--", alpha=0.5)
+
+    ax2.plot(list(k_range), sil_list, "s-", color="#22c55e", linewidth=2, markersize=7)
+    ax2.set_title("Silhouette Score", fontweight="bold")
+    ax2.set_xlabel("Number of Clusters (K)")
+    ax2.set_ylabel("Silhouette Score")
+    ax2.grid(axis="y", linestyle="--", alpha=0.5)
+    ax2.axvline(best_k, color="#ef4444", linestyle="--", label=f"Best K={best_k}")
+    ax2.legend()
+
+    plt.suptitle("Optimal K Selection for K-Means Clustering", fontsize=13, fontweight="bold")
+    plt.tight_layout()
+    plt.savefig(os.path.join(OUT_DIR, "05_elbow_silhouette.png"), dpi=150)
+    plt.close()
+    print(f"[05] Saved: 05_elbow_silhouette.png")
+    print(f"[05] Best K by silhouette: {best_k}  (score={max(sil_list):.4f})")
+    return best_k, sil_list, wcss_list
+
+
+def build_kmeans_features(
+    X_train_pre_smote: pd.DataFrame,
+    X_train_post_smote: pd.DataFrame,
+    X_test_enc: pd.DataFrame,
+    optimal_k: int,
+) -> tuple:
+    """
+    Fit KMeans on pre-SMOTE training data (no leakage), then apply to:
+      • X_train_post_smote (SMOTE-augmented, same shape as X_train.csv)
+      • X_test_enc
+
+    Strategy A — distance features:
+      Appends K columns  dist_to_cluster_0 … dist_to_cluster_{K-1}
+      Saved as X_train_dist.csv / X_test_dist.csv
+
+    Strategy B — cluster-ID feature:
+      Appends 1 column  kmeans_cluster_id  (integer 0…K-1)
+      Saved as X_train_clust.csv / X_test_clust.csv
+
+    One shared model artifact: kmeans_fe_model.pkl
+    (reused by Step 7 for business profiling without re-fitting)
+    """
+    # ── Fit on REAL training data only (pre-SMOTE) ────────────────────────────
+    km = KMeans(n_clusters=optimal_k, random_state=42, n_init=10)
+    km.fit(X_train_pre_smote.values)
+
+    dist_cols = [f"dist_to_cluster_{i}" for i in range(optimal_k)]
+
+    # ── Strategy A: distances ─────────────────────────────────────────────────
+    train_dists  = km.transform(X_train_post_smote.values)
+    test_dists   = km.transform(X_test_enc.values)
+
+    X_train_dist = X_train_post_smote.copy()
+    X_train_dist[dist_cols] = train_dists
+
+    X_test_dist  = X_test_enc.copy()
+    X_test_dist[dist_cols]  = test_dists
+
+    # ── Strategy B: cluster IDs ───────────────────────────────────────────────
+    train_cluster_ids = km.predict(X_train_post_smote.values)
+    test_cluster_ids  = km.predict(X_test_enc.values)
+
+    X_train_clust = X_train_post_smote.copy()
+    X_train_clust["kmeans_cluster_id"] = train_cluster_ids
+
+    X_test_clust  = X_test_enc.copy()
+    X_test_clust["kmeans_cluster_id"]  = test_cluster_ids
+
+    # ── Save ─────────────────────────────────────────────────────────────────
+    X_train_dist.to_csv(os.path.join(DATA_DIR, "X_train_dist.csv"),  index=False)
+    X_test_dist.to_csv( os.path.join(DATA_DIR, "X_test_dist.csv"),   index=False)
+    X_train_clust.to_csv(os.path.join(DATA_DIR, "X_train_clust.csv"), index=False)
+    X_test_clust.to_csv( os.path.join(DATA_DIR, "X_test_clust.csv"),  index=False)
+    joblib.dump(km, os.path.join(MODEL_DIR, "kmeans_fe_model.pkl"))
+
+    print(f"[05] KMeans(K={optimal_k}) fitted on {len(X_train_pre_smote):,} pre-SMOTE samples.")
+    print(f"[05] Strategy A: {len(dist_cols)} distance columns  "
+          f"→ X_train_dist.csv / X_test_dist.csv")
+    print(f"[05] Strategy B: 1 cluster_id column  "
+          f"→ X_train_clust.csv / X_test_clust.csv")
+    print(f"[05] Saved: kmeans_fe_model.pkl")
+
+    return X_train_dist, X_test_dist, X_train_clust, X_test_clust, km
 
 
 if __name__ == "__main__":

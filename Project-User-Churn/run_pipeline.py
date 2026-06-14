@@ -66,12 +66,16 @@ def main():
     banner("Step 5: Preprocessing")
     load_src("05_preprocessing.py").run_preprocessing()
 
-    # ── Step 6 ───────────────────────────────────────────────────────────────
-    banner("Step 6: Modelling (XGBoost + Optuna + SHAP)")
+    # ── Step 6 ────────────────────────────────────────────────────────────────────────
+    banner("Step 6: Modelling (XGBoost + Optuna + SHAP + Multi-Model Comparison)")
     load_src("06_modelling.py").run_modelling()
 
-    # ── Step 7 ───────────────────────────────────────────────────────────────
-    banner("Step 7: Clustering")
+    # ── Step 6b ─────────────────────────────────────────────────────────────────────
+    banner("Step 6b: Semi-supervised LR (Strategy C — K-Means Label Propagation)")
+    load_src("06b_semisupervised.py").run_semisupervised()
+
+    # ── Step 7 ────────────────────────────────────────────────────────────────────────
+    banner("Step 7: Cluster Profiling (Business Reporting — model from Step 5)")
     load_src("07_clustering.py").run_clustering()
 
 
