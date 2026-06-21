@@ -1,0 +1,4 @@
+Experiment,Method,Mean ROC-AUC,95% CI,Difference,Practical significance
+With vs Without RFM,XGBoost baseline compared with an RFM-occluded test matrix,0.9863,"[0.0186, 0.0586]",0.0371,Practically meaningful
+With vs Without Cluster Features,XGBoost with k-means cluster feature compared with base XGBoost,0.987,"[-0.0077, 0.0122]",0.0007,Not statistically distinguishable
+Leakage Removal Experiment,Distance-feature logistic model compared with base logistic model,0.8979,"[0.0029, 0.0244]",0.0135,Practically meaningful

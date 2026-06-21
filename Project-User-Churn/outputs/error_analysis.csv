@@ -1,0 +1,25 @@
+Segment,Error Type,Count,Tenure Mean,SatisfactionScore Mean,OrderCount Mean,CashbackAmount Mean,NumberOfDeviceRegistered Mean
+Overall,Correct,1087,10.3202,3.0754,3.1422,176.6621,3.6559
+Overall,False Positive,1,1.0,1.0,2.0,166.57,5.0
+Overall,False Negative,38,7.1892,2.8158,3.6316,174.3132,3.7368
+cluster=0,False Negative,9,10.3333,2.5556,8.3333,236.5867,4.1111
+cluster=1,False Positive,1,1.0,1.0,2.0,166.57,5.0
+cluster=1,False Negative,7,3.2857,3.0,4.1429,163.8543,3.7143
+cluster=2,False Negative,13,5.8462,3.3077,1.8462,164.62,3.6923
+cluster=3,False Negative,9,9.25,2.2222,1.1111,134.1756,3.4444
+risk_category=Critical,False Negative,8,8.375,3.0,1.0,181.4338,3.375
+risk_category=High,False Negative,9,9.625,2.6667,1.1111,137.3878,3.5556
+risk_category=Low,False Negative,9,2.8889,2.7778,2.7778,164.7622,4.2222
+risk_category=Medium,False Positive,1,1.0,1.0,2.0,166.57,5.0
+risk_category=Medium,False Negative,3,4.0,3.3333,2.0,180.2967,3.3333
+risk_category=Very Low,False Negative,9,9.3333,2.6667,9.8889,212.4656,3.8889
+persona=VIP Ổn định,False Negative,9,10.3333,2.5556,8.3333,236.5867,4.1111
+persona=Đô thị Trung thành,False Positive,1,1.0,1.0,2.0,166.57,5.0
+persona=Đô thị Trung thành,False Negative,29,6.1786,2.8966,2.1724,154.9869,3.6207
+MaritalStatus=Divorced,False Negative,10,6.8,3.4,5.9,202.956,3.8
+MaritalStatus=Married,False Positive,1,1.0,1.0,2.0,166.57,5.0
+MaritalStatus=Married,False Negative,14,8.1429,2.7143,2.9286,174.0564,3.6429
+MaritalStatus=Single,False Negative,14,6.4615,2.5,2.7143,154.1107,3.7857
+Gender=Female,False Positive,1,1.0,1.0,2.0,166.57,5.0
+Gender=Female,False Negative,17,5.1176,2.8824,4.1176,189.7253,3.8235
+Gender=Male,False Negative,21,8.95,2.7619,3.2381,161.8367,3.6667

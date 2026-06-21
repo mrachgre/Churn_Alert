@@ -1,0 +1,5 @@
+Model,Status,TN,FP,FN,TP,Expected Cost,Expected Savings,Cost Reduction %,Estimated Retained Customers,Estimated Retention Value,ROI Score
+Logistic Regression,Available,790,146,34,156,32100.0,62900.0,66.21,156,78000.0,4.166
+Decision Tree,Available,851,85,55,135,38500.0,56500.0,59.47,135,67500.0,5.136
+Random Forest,Available,925,11,14,176,16350.0,78650.0,82.79,176,88000.0,8.412
+XGBoost,Available,935,1,38,152,26650.0,68350.0,71.95,152,76000.0,8.935

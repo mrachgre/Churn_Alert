@@ -1,0 +1,4 @@
+Model,Mean Accuracy,Std Accuracy,Mean F1,Std F1,Mean ROC-AUC,Std ROC-AUC
+Logistic Regression,0.8403,0.0077,0.8416,0.0075,0.9135,0.0063
+Random Forest,0.9762,0.0039,0.9763,0.0039,0.9973,0.0009
+XGBoost,0.9477,0.0062,0.9476,0.0062,0.9895,0.0017

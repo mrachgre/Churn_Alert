@@ -83,6 +83,13 @@ def main():
     banner("Step 8: Survival Analysis")
     load_src("08_survival_analysis.py").run_survival_analysis()
 
+    banner("Step 9: Research Quality Reports")
+    try:
+        load_src("statistical_validation.py").run_statistical_validation()
+        load_src("research_quality_reports.py").run_research_quality_reports()
+    except Exception as exc:
+        print(f"[Research] Optional research reporting skipped: {exc}")
+
     elapsed = (time.time() - total_start) / 60
     print(f"\n{'='*70}")
     print(f"  ✅  FULL PIPELINE COMPLETE  ({elapsed:.1f} minutes)")
