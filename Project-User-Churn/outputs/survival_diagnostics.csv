@@ -1,0 +1,13 @@
+Feature,Hazard Ratio,p-value,PH Assumption Pass/Fail,Interpretation confidence
+SatisfactionScore,1.2372,0.0,Pass,High
+DaySinceLastOrder,0.8812,0.0,Pass,High
+Complain,3.254,0.0,Pass,High
+OrderCount,1.076,0.004055,Pass,High
+CashbackAmount,0.9886,0.0,Fail,Low
+NumberOfDeviceRegistered,1.4867,0.0,Fail,Low
+WarehouseToHome,1.0182,0.0,Pass,High
+HourSpendOnApp,1.0319,0.607898,Fail,Low
+NumberOfAddress,1.0403,0.011958,Pass,Medium
+OrderAmountHikeFromlastYear,0.9941,0.598604,Pass,Low
+CouponUsed,0.9907,0.798645,Pass,Low
+CityTier,1.3593,0.0,Pass,High
