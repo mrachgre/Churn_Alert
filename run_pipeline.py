@@ -72,9 +72,6 @@ def main():
     banner("Step 3: EDA")
     load_src("03_eda.py").run_eda()
 
-    # ── Step 4 ───────────────────────────────────────────────────────────────
-    banner("Step 4: RFM Segmentation")
-    load_src("04_rfm_segmentation.py").run_rfm()
 
     # ── Step 5 ───────────────────────────────────────────────────────────────
     banner("Step 5: Preprocessing")

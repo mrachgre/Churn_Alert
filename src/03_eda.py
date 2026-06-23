@@ -19,7 +19,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from pipeline_config import DATA_DIR, OUT_DIR   # noqa: E402
-CLEAN_PATH = os.path.join(DATA_DIR, "ecommerce_churn_clean.csv")
+CLEAN_PATH = os.path.join(DATA_DIR, "ecommerce_churn_train.csv")
 
 PALETTE = {"0": "#22c55e", "1": "#ef4444", 0: "#22c55e", 1: "#ef4444"}
 

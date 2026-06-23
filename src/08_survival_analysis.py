@@ -28,6 +28,17 @@ from lifelines.statistics import multivariate_logrank_test
 
 from pipeline_config import DATA_DIR, MODEL_DIR, OUT_DIR   # noqa: E402
 
+import os
+import numpy as np
+import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from lifelines import KaplanMeierFitter
+from lifelines.statistics import multivariate_logrank_test
+
+from pipeline_config import OUT_DIR   # noqa: E402
+
 RISK_LABELS = ["Very Low", "Low", "Medium", "High", "Critical"]
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -222,34 +233,55 @@ def run_step8():
 # Step 9 — Kaplan-Meier Survival Analysis
 # ─────────────────────────────────────────────────────────────────────────────
 
+
+
+
+"""
+Step 9 — Persona-Based Survival Analysis (Kaplan-Meier)
+=======================================================
+HƯỚNG DẪN: thay TRỌN 2 hàm `plot_km_by_cluster` và `run_step9` đang có trong
+08_survival_analysis.py bằng 2 hàm dưới đây. KHÔNG động vào Step 8.
+
+Sửa gì:
+  • Bỏ dict CLUSTER_STYLE hardcode chỉ có cluster 0–3 (Cluster 4 trước đây
+    rơi vào nhánh mặc định → xám, vô danh).
+  • Sinh màu ĐỘNG theo số cụm thực tế → đúng với mọi K (đang chạy K=5).
+  • Bỏ các comment "stable/low risk" gán cứng cho từng cluster (sai khi K đổi).
+
+Các import này phải có sẵn ở đầu 08_survival_analysis.py (vốn đã có):
+    import os, numpy as np, matplotlib.pyplot as plt
+    from lifelines import KaplanMeierFitter
+    from lifelines.statistics import multivariate_logrank_test
+    from pipeline_config import OUT_DIR
+"""
+
+
+# Bảng màu đủ tới 8 cụm; tự lặp nếu nhiều hơn
+KM_PALETTE = ["#22c55e", "#3b82f6", "#f59e0b", "#ef4444",
+              "#8b5cf6", "#ec4899", "#14b8a6", "#f97316"]
+
+
 def plot_km_by_cluster(df: pd.DataFrame):
-    """Kaplan-Meier curves per cluster — labels are 'Cluster 0 / 1 / 2 / 3'."""
+    """Kaplan-Meier theo cụm — màu sinh ĐỘNG theo số cụm thực tế (mọi K)."""
     df_clean = df.dropna(subset=["Tenure", "y_true"]).copy()
 
-    # Colour by cluster risk profile (matches user descriptions)
-    CLUSTER_STYLE = {
-        0: {"name": "Cluster 0", "color": "#22c55e"},   # stable, low risk
-        1: {"name": "Cluster 1", "color": "#3b82f6"},   # stable, low risk
-        2: {"name": "Cluster 2", "color": "#f59e0b"},   # needs monitoring
-        3: {"name": "Cluster 3", "color": "#ef4444"},   # priority intervention
-    }
+    cluster_ids = sorted(int(c) for c in df_clean["cluster"].dropna().unique())
+    K = len(cluster_ids)
 
     fig, ax = plt.subplots(figsize=(10, 6))
     T, E = df_clean["Tenure"], df_clean["y_true"]
 
     kmf = KaplanMeierFitter()
-    for cid in sorted(df_clean["cluster"].dropna().unique()):
+    for i, cid in enumerate(cluster_ids):
         mask  = df_clean["cluster"] == cid
-        style = CLUSTER_STYLE.get(int(cid),
-                                  {"name": f"Cluster {int(cid)}", "color": "gray"})
-        kmf.fit(T[mask], E[mask], label=style["name"])
-        kmf.plot_survival_function(ax=ax, color=style["color"],
-                                   linewidth=2.5, ci_show=False)
+        color = KM_PALETTE[i % len(KM_PALETTE)]
+        kmf.fit(T[mask], E[mask], label=f"Cluster {cid}")
+        kmf.plot_survival_function(ax=ax, color=color, linewidth=2.5, ci_show=False)
 
+    # log-rank test giữa các cụm
     try:
         result = multivariate_logrank_test(T, df_clean["cluster"].fillna(-1), E)
-        p_val  = result.p_value
-        p_txt  = f"log-rank p = {p_val:.4e}"
+        p_txt  = f"log-rank p = {result.p_value:.4e}"
     except Exception:
         p_txt = ""
 
@@ -265,7 +297,7 @@ def plot_km_by_cluster(df: pd.DataFrame):
     plt.tight_layout()
     plt.savefig(os.path.join(OUT_DIR, "08_km_by_cluster.png"), dpi=150)
     plt.close()
-    print("[09] Saved: 08_km_by_cluster.png")
+    print(f"[09] Saved: 08_km_by_cluster.png  (K={K} clusters)")
 
 
 def run_step9(df_with_clusters: pd.DataFrame):
