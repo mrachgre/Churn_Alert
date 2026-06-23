@@ -1,0 +1,1208 @@
+\documentclass[12pt,a4paper]{article}
+
+% â”€â”€ Encoding & Language â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage[T5]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[vietnamese]{babel}
+
+% â”€â”€ Page layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm]{geometry}
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
+
+% â”€â”€ Typography â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage{microtype}
+\usepackage{lmodern}
+
+% â”€â”€ Colors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage[dvipsnames,table]{xcolor}
+\definecolor{hust}{RGB}{0,82,147}
+\definecolor{rowgray}{RGB}{245,245,245}
+\definecolor{codered}{RGB}{192,0,0}
+\definecolor{codeblue}{RGB}{0,0,180}
+
+% â”€â”€ Headers & footers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{hust}Báo Cáo Bài Tập Lớn — ML \& Khai Phá Dữ Liệu}
+\fancyhead[R]{\small\color{hust}HUST 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% â”€â”€ Section styling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage{titlesec}
+\titleformat{\section}{\large\bfseries\color{hust}}{}{0em}{\thesection\quad}[\titlerule]
+\titleformat{\subsection}{\normalsize\bfseries\color{hust!80!black}}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% â”€â”€ Tables â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{ragged2e}
+\usepackage{seqsplit}
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{4pt}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\newcolumntype{P}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newenvironment{fittabular}[2][c]{%
+  \begin{adjustbox}{max width=\textwidth}%
+  \begin{tabular}[#1]{#2}%
+}{%
+  \end{tabular}%
+  \end{adjustbox}%
+}
+
+% â”€â”€ Code blocks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{rowgray},
+  frame=single,
+  framesep=4pt,
+  xleftmargin=8pt,
+  breaklines=true,
+  breakatwhitespace=false,
+  keepspaces=true,
+}
+
+% â”€â”€ Lists â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage{enumitem}
+\setlist[itemize]{topsep=4pt,itemsep=2pt}
+
+% â”€â”€ Math â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% â”€â”€ Figures â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small,labelfont=bf}
+% Äáº·t áº£nh theo cáº¥u trÃºc: outputs/ vÃ  outputs/
+% Thay Ä‘á»•i path bÃªn dÆ°á»›i náº¿u báº¡n tá»• chá»©c thÆ° má»¥c khÃ¡c trong project
+\graphicspath{{./}{../outputs/}}
+
+% â”€â”€ Hyperlinks â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\usepackage[hidelinks,colorlinks=true,linkcolor=hust,urlcolor=hust]{hyperref}
+
+% â”€â”€ TOC depth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\setcounter{tocdepth}{2}
+\emergencystretch=3em
+\sloppy
+
+% â”€â”€ Custom commands â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\newcommand{\code}[1]{\begingroup\small\ttfamily\seqsplit{#1}\endgroup}
+\newcommand{\tick}{$\checkmark$}
+\newcommand{\cross}{$\times$}
+\newcommand{\riskscore}{\text{RiskScore}}
+
+% â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+\begin{document}
+
+% â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+%  TRANG BÃŒA
+% â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+\newgeometry{top=1.6cm,bottom=1.6cm,left=2.2cm,right=2.2cm}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  \color{black}
+
+  {\large\bfseries ĐẠI HỌC BÁCH KHOA HÀ NỘI\par}
+  \vspace{0.15cm}
+  {\large\bfseries TRƯỜNG CÔNG NGHỆ THÔNG TIN VÀ TRUYỀN THÔNG\par}
+
+  \vspace{0.65cm}
+  \rule{0.32\textwidth}{0.4pt}
+
+  \vspace{0.9cm}
+  {\LARGE\bfseries BÁO CÁO BÀI TẬP LỚN\par}
+  \vspace{0.35cm}
+  {\Large\bfseries NHẬP MÔN HỌC MÁY VÀ KHAI PHÁ DỮ LIỆU\par}
+
+  \vspace{1.05cm}
+  \includegraphics[width=0.48\textwidth]{logo-soict-hust-1.png}
+
+  \vspace{0.95cm}
+  {\large\bfseries TÊN ĐỀ TÀI\par}
+  \vspace{0.35cm}
+  \begin{minipage}{0.9\textwidth}
+    \centering
+    {\large\bfseries
+    ỨNG DỤNG MACHINE LEARNING TRONG DỰ ĐOÁN VÀ PHÂN TẦNG RỦI RO KHÁCH HÀNG\\
+    SO SÁNH HAI BÀI TOÁN: CUSTOMER CHURN VÀ PASSENGER SATISFACTION\par}
+  \end{minipage}
+
+  \vspace{0.95cm}
+  \begin{fittabular}{@{}rl@{}}
+    \textbf{Giảng viên hướng dẫn:} & Ngô Văn Linh \\[0.45em]
+    \textbf{Sinh viên thực hiện:}  & Vũ Quang Nhật -- 20235800 \\
+                                  & Phạm Tiến Đại -- 20225799 \\
+                                  & Hoàng Nguyễn Phong -- 20215112 \\[0.45em]
+    \textbf{Nhóm:}                 & 1
+  \end{fittabular}
+
+  \vfill
+  {\itshape Hà Nội, tháng 6 năm 2026\par}
+\end{titlepage}
+\restoregeometry
+
+% â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+%  HEADER META
+
+% ══════════════════════════════════════════════════════════════════════════════
+%  HEADER META
+% ══════════════════════════════════════════════════════════════════════════════
+\begin{center}
+  {\bfseries Nhóm thực hiện:} Vũ Quang Nhật · Phạm Tiến Đại · Hoàng Nguyễn Phong\\
+  {\bfseries Phạm vi:} E-Commerce Customer Churn Prediction\\
+  {\bfseries Công nghệ:} Python · XGBoost · KMeans · SHAP · Kaplan-Meier · Optuna
+\end{center}
+
+\rule{\textwidth}{0.4pt}
+
+% ══════════════════════════════════════════════════════════════════════════════
+%  MỤC LỤC
+% ══════════════════════════════════════════════════════════════════════════════
+\newpage
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Phát Biểu Bài Toán}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{E-Commerce Customer Churn Prediction}
+
+\textbf{Bối cảnh:}
+Trong ngành thương mại điện tử, chi phí giữ chân một khách hàng cũ thấp hơn đáng kể so với thu
+hút khách mới. Việc xác định sớm khách hàng có khả năng rời bỏ (\textit{churn}) giúp doanh nghiệp
+can thiệp kịp thời và phân bổ nguồn lực CSKH hiệu quả hơn.
+
+\textbf{Bài toán:}
+Xây dựng pipeline dự đoán xác suất churn cho từng khách hàng, kết hợp phân nhóm hành vi
+(clustering) và phân tích vòng đời (survival analysis), để xuất ra một \textbf{Risk Score cá nhân
+hóa} giúp đội ngũ CSKH ưu tiên can thiệp đúng đối tượng, đúng thời điểm.
+
+\textbf{Input:} Dữ liệu hành vi mua sắm của 5\,630 khách hàng (lịch sử đơn hàng, phàn nàn, thiết
+bị, cashback, tenure).
+
+\textbf{Output:} $\text{RiskScore} \in [0,1]$ $\times$ $\text{Cluster} \in \{0,1,2,3,4\}$ $\times$
+Survival Context $\to$ Ma trận can thiệp ưu tiên (P1--P5).
+
+\subsection*{Mục tiêu phân tích}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Thành phần} & \textbf{Mô tả} \\
+  \midrule
+  Loại bài toán      & Binary classification: dự đoán \code{Churn} (0/1) \\
+  Đơn vị phân tích   & 1 dòng tương ứng 1 khách hàng trong dữ liệu thương mại điện tử \\
+  Phân khúc hành vi  & RFM segmentation và KMeans để mô tả nhóm khách hàng \\
+  Phân tích vòng đời & Kaplan-Meier và log-rank test dựa trên \code{Tenure} và \code{Churn} \\
+  Đầu ra cuối        & Risk Score, cluster hành vi và ma trận ưu tiên can thiệp P1--P5 \\
+  Vấn đề dữ liệu     & Mất cân bằng lớp churn (16.8\% churn, 83.2\% không churn) và một số cột có missing value \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Cơ Sở Lý Thuyết}
+\label{sec:theory}
+% ══════════════════════════════════════════════════════════════════════════════
+
+Mục này trình bày nền tảng lý thuyết và công thức toán học của các kỹ thuật được sử dụng trong
+pipeline E-Commerce Churn Alert. Nội dung được nhóm theo các giai đoạn chính của một dự án học máy:
+\textit{K láng giềng/KNN}, \textit{phân tích thống kê (EDA)}, \textit{phân khúc khách hàng (RFM)},
+\textit{phân cụm}, \textit{mô hình phân loại \& tinh chỉnh}, và \textit{diễn giải/hậu kiểm}.
+
+\subsection{K Láng Giềng Gần Nhất (KNN)}
+
+\subsubsection{Nguyên lý KNN}
+
+KNN (\textit{K-Nearest Neighbors}) là một phương pháp học dựa trên mẫu
+(\textit{instance-based learning}). Thay vì học một hàm tham số rõ ràng trong giai đoạn huấn luyện,
+KNN lưu lại dữ liệu đã biết và khi cần dự đoán cho một điểm mới $x$, thuật toán tìm $k$ điểm gần
+nhất với $x$ trong không gian đặc trưng. Nhãn hoặc giá trị của $x$ được suy ra từ các láng giềng
+này.
+
+Với bài toán phân loại, dự đoán thường được xác định bằng bỏ phiếu đa số:
+\[
+  \hat{y}(x) = \arg\max_{c \in \mathcal{C}}
+  \sum_{i \in \mathcal{N}_k(x)} \mathbf{1}(y_i = c)
+\]
+trong đó $\mathcal{N}_k(x)$ là tập $k$ láng giềng gần nhất của $x$, $\mathcal{C}$ là tập nhãn và
+$\mathbf{1}(\cdot)$ là hàm chỉ báo. Nếu dùng trọng số theo khoảng cách, láng giềng gần hơn có ảnh
+hưởng lớn hơn:
+\[
+  \hat{y}(x) = \arg\max_{c \in \mathcal{C}}
+  \sum_{i \in \mathcal{N}_k(x)} w_i\,\mathbf{1}(y_i = c),
+  \qquad
+  w_i = \frac{1}{d(x,x_i)+\epsilon}
+\]
+
+\subsubsection{Khoảng cách trong KNN}
+
+KNN phụ thuộc mạnh vào cách đo khoảng cách. Với dữ liệu số đã được chuẩn hóa, khoảng cách Euclid là
+lựa chọn phổ biến:
+\[
+  d(x_i, x_l) = \sqrt{\sum_{m=1}^{p}(x_{i,m} - x_{l,m})^2}
+\]
+Trong trường hợp có nhiều đặc trưng khác thang đo, các biến có giá trị lớn sẽ lấn át biến nhỏ hơn.
+Vì vậy, với các mô hình hoặc bước xử lý dựa trên khoảng cách, dữ liệu cần được scale trước khi tính
+khoảng cách. Trong pipeline e-commerce, điều này đặc biệt quan trọng với các biến như
+\code{CashbackAmount}, \code{WarehouseToHome}, \code{OrderCount} và \code{Tenure}.
+
+Giá trị $k$ điều khiển độ trơn của mô hình: $k$ nhỏ làm mô hình nhạy với nhiễu và outlier, còn $k$
+lớn làm dự đoán ổn định hơn nhưng có thể làm mất ranh giới cục bộ. Do đó, $k$ thường được chọn bằng
+thực nghiệm hoặc cross-validation. Trong bài toán này, $k=5$ được dùng cho bước điền khuyết vì cân
+bằng giữa tính cục bộ và độ ổn định.
+
+\subsubsection{KNN Imputer (Điền khuyết bằng K láng giềng gần nhất)}
+
+Với mỗi mẫu có giá trị thiếu tại đặc trưng $j$, KNN Imputer tìm $k$ láng giềng gần nhất trong không
+gian các đặc trưng \emph{không thiếu}, dựa trên khoảng cách Euclid có trọng số theo số chiều quan
+sát được:
+\[
+  d(x_i, x_l) = \sqrt{\dfrac{\#\text{cols}}{\#\text{cols hiện diện ở cả hai mẫu}}
+  \sum_{m \in \text{cols hiện diện}} (x_{i,m} - x_{l,m})^2}
+\]
+Giá trị điền khuyết là trung bình của $k$ láng giềng gần nhất:
+\[
+  \hat{x}_{i,j} = \dfrac{1}{k}\sum_{l \in \mathcal{N}_k(i)} x_{l,j}
+\]
+Nhóm dùng $k=5$ vì giữ được cấu trúc tương quan giữa các đặc trưng (so với mean/median imputation
+chỉ điền một hằng số duy nhất, làm méo phương sai và tương quan).
+
+Trong dữ liệu e-commerce, các cột như \code{Tenure}, \code{WarehouseToHome}, \code{HourSpendOnApp},
+\code{OrderCount}, \code{CouponUsed}, \code{OrderAmountHikeFromlastYear} và
+\code{DaySinceLastOrder} có tỉ lệ thiếu khoảng 4--5\%. Nếu thay toàn bộ bằng trung vị, mọi khách
+hàng bị thiếu cùng một cột sẽ nhận cùng một giá trị, làm giảm khác biệt hành vi giữa các khách hàng.
+KNN Imputer tận dụng các khách hàng có hồ sơ gần giống nhau để ước lượng giá trị thiếu, nhờ đó phù
+hợp hơn với bài toán churn nơi các biến hành vi thường có tương quan với nhau.
+
+\subsection{Các Kỹ Thuật Xử Lý Dữ Liệu Bổ Trợ}
+
+\subsubsection{Phương pháp IQR --- Phát hiện \& Xử lý Outlier}
+
+Khoảng liên phân vị (Interquartile Range):
+\[
+  IQR = Q_3 - Q_1
+\]
+trong đó $Q_1, Q_3$ là phân vị thứ 25\% và 75\%. Một điểm dữ liệu $x$ được xem là outlier nếu:
+\[
+  x < Q_1 - 1.5 \cdot IQR \quad \text{hoặc} \quad x > Q_3 + 1.5 \cdot IQR
+\]
+Thay vì loại bỏ (drop), nhóm áp dụng \textbf{clipping} (winsorizing): mọi giá trị vượt ngưỡng được
+``ép'' về đúng biên:
+\[
+  x_{\text{clip}} = \min\big(\max(x,\, Q_1 - 1.5\,IQR),\; Q_3 + 1.5\,IQR\big)
+\]
+giúp giữ nguyên số lượng mẫu, tránh mất thông tin của các dòng khác trong cùng bản ghi.
+
+\subsubsection{Min-Max Scaling}
+
+Chuẩn hóa tuyến tính đưa mọi đặc trưng về cùng khoảng $[0,1]$, cần thiết cho các mô hình dựa trên
+khoảng cách hoặc gradient (Logistic Regression):
+\[
+  x' = \dfrac{x - x_{\min}}{x_{\max} - x_{\min}}
+\]
+Khác với Z-score, MinMax không giả định phân phối Gauss và bảo toàn hình dạng phân phối gốc, phù
+hợp sau khi đã clip outlier bằng IQR.
+
+\subsubsection{One-Hot Encoding (OHE)}
+
+Với biến hạng mục $X$ có $c$ giá trị duy nhất $\{v_1,\dots,v_c\}$, OHE tạo $c$ (hoặc $c-1$, tránh
+multicollinearity) cột nhị phân:
+\[
+  X^{(v_k)}_i =
+  \begin{cases}
+    1 & \text{nếu } X_i = v_k \\
+    0 & \text{ngược lại}
+  \end{cases}
+\]
+Áp dụng cho các biến không có thứ tự tự nhiên trong dữ liệu e-commerce như
+\code{PreferedOrderCat}, \code{PreferredPaymentMode}, \code{PreferredLoginDevice},
+\code{MaritalStatus} và \code{Gender}. Với biến dạng nhóm nhưng có ý nghĩa mức độ như
+\code{CityTier}, nhóm chuyển kiểu dữ liệu phù hợp trước khi đưa vào pipeline để tránh mô hình hiểu
+sai quan hệ số học.
+
+\subsubsection{SMOTE --- Synthetic Minority Over-sampling Technique}
+
+Với mỗi mẫu $x_i$ thuộc lớp thiểu số, SMOTE chọn ngẫu nhiên một láng giềng gần nhất $x_{zi}$
+(trong cùng lớp) và sinh mẫu tổng hợp bằng nội suy tuyến tính:
+\[
+  x_{\text{new}} = x_i + \lambda \cdot (x_{zi} - x_i), \qquad \lambda \sim \mathcal{U}(0,1)
+\]
+Việc này tạo thêm mẫu lớp churn (16.8\%) trên đường nối hai điểm thật trong không gian đặc trưng,
+khác với random oversampling (chỉ lặp lại mẫu cũ, dễ overfit). SMOTE chỉ áp dụng \textbf{sau khi
+chia train/test} và chỉ trên \textbf{tập train} để tránh leakage sang tập kiểm tra.
+
+\subsubsection{Chi-bình phương ($\chi^2$) --- Lựa chọn đặc trưng}
+
+Kiểm định mức độ phụ thuộc giữa đặc trưng (đã rời rạc hóa/không âm) và nhãn:
+\[
+  \chi^2 = \sum_{i=1}^{r}\sum_{j=1}^{c} \dfrac{(O_{ij} - E_{ij})^2}{E_{ij}}
+\]
+với $O_{ij}$ là tần suất quan sát, $E_{ij}$ là tần suất kỳ vọng nếu hai biến độc lập. Đặc trưng có
+$p\text{-value} < 0.05$ (tương đương $\chi^2$ lớn) được giữ lại trong Linear Path --- đây là một
+phép kiểm định thống kê, không phải khoảng cách, nên chỉ dùng được trên dữ liệu không âm (sau
+MinMaxScale).
+
+\subsection{Phân Tích Thống Kê Hai Biến (Bivariate EDA)}
+
+\subsubsection{Hệ số tương quan Pearson}
+
+Đo mức độ tương quan \emph{tuyến tính} giữa hai biến liên tục $X, Y$:
+\[
+  r = \dfrac{\sum_{i}(x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i-\bar{x})^2}\sqrt{\sum_i (y_i-\bar{y})^2}}, \qquad r \in [-1, 1]
+\]
+Dùng để xây heatmap tương quan và phát hiện multicollinearity giữa các biến số trong dữ liệu
+e-commerce. Ví dụ, nếu hai biến hành vi mua sắm có tương quan quá cao, nhóm sẽ cân nhắc giữ lại
+biến có ý nghĩa nghiệp vụ rõ hơn để giảm nhiễu và giúp mô hình ổn định.
+
+\subsubsection{Tương quan Point-Biserial}
+
+Trường hợp đặc biệt của Pearson khi một biến là liên tục ($Y$) và biến còn lại là nhị phân ($X \in
+\{0,1\}$, ví dụ \code{Churn}):
+\[
+  r_{pb} = \dfrac{\bar{Y}_1 - \bar{Y}_0}{s_Y}\sqrt{p\,(1-p)}
+\]
+trong đó $\bar{Y}_1,\bar{Y}_0$ là trung bình $Y$ tại nhóm $X=1$ và $X=0$, $s_Y$ là độ lệch chuẩn
+của $Y$, $p$ là tỉ lệ $X=1$. Dùng để xếp hạng các đặc trưng số ảnh hưởng đến nhãn nhị phân
+(\code{Tenure}: $r=-0.35$).
+
+\subsubsection{Hệ số Cramér's V}
+
+Đo mức độ liên kết giữa hai biến \emph{hạng mục}, dựa trên thống kê $\chi^2$ đã chuẩn hóa về
+$[0,1]$:
+\[
+  V = \sqrt{\dfrac{\chi^2 / n}{\min(r-1,\, c-1)}}
+\]
+với $n$ là tổng số quan sát, $r, c$ là số hạng mục của hai biến. $V \to 0$: độc lập; $V \to 1$:
+liên kết hoàn toàn. Ví dụ \code{Complain} có $V \approx 0.33$ với \code{Churn} --- liên kết mạnh
+nhất trong các biến hạng mục.
+
+\subsection{RFM Segmentation}
+
+Mô hình RFM chấm điểm khách hàng theo 3 chiều hành vi giao dịch, sử dụng phân vị (\textbf{quintile,
+NTILE(5)}) để chia mỗi chiều thành 5 nhóm điểm $1$--$5$:
+
+\begin{itemize}
+  \item \textbf{Recency (R):} $R_i = 5 - \text{quintile rank}(\code{DaySinceLastOrder}_i)$ --- mua
+    gần đây hơn $\to$ điểm cao hơn.
+  \item \textbf{Frequency (F):} $F_i = \text{quintile rank}(\code{OrderCount}_i)$ --- mua nhiều
+    hơn $\to$ điểm cao hơn.
+  \item \textbf{Monetary (M):} $M_i = \text{quintile rank}(\code{CashbackAmount}_i)$ --- giá trị
+    cao hơn $\to$ điểm cao hơn.
+\end{itemize}
+
+Hàm \texttt{NTILE(5)} (SQL window function) chia một cột đã sắp xếp thành 5 phần có số lượng phần
+tử gần bằng nhau:
+\[
+  \text{NTILE}(k)\text{ tại hàng } i = \left\lceil \dfrac{i \cdot k}{n} \right\rceil, \quad i = 1,\dots,n
+\]
+\code{rfm\_total} $= R + F + M \in [3,15]$ được dùng làm đặc trưng input cho mô hình ML, còn các
+quy tắc ngưỡng (ví dụ $F\geq 4, M\geq 4 \to$ Champions) định nghĩa 5 \emph{segment} mô tả ở
+Bảng~3.
+
+\subsection{Phân Cụm (Clustering)}
+
+\subsubsection{K-Means}
+
+Thuật toán phân $n$ điểm dữ liệu thành $K$ cụm bằng cách tối thiểu hóa tổng bình phương khoảng cách
+trong cụm (Within-Cluster Sum of Squares):
+\[
+  \arg\min_{S} \sum_{k=1}^{K} \sum_{x \in S_k} \lVert x - \mu_k \rVert^2
+\]
+với $\mu_k = \frac{1}{|S_k|}\sum_{x \in S_k} x$ là tâm cụm. Thuật toán Lloyd lặp 2 bước đến khi hội
+tụ:
+\begin{enumerate}
+  \item \textbf{Assignment:} gán mỗi điểm vào cụm có tâm gần nhất: $\;c_i = \arg\min_k \lVert x_i - \mu_k\rVert^2$.
+  \item \textbf{Update:} cập nhật lại tâm cụm là trung bình các điểm vừa gán.
+\end{enumerate}
+KMeans được \textbf{fit chỉ trên dữ liệu train (pre-SMOTE)} để tránh leakage; tập test dùng
+\code{.predict()} với tâm cụm đã học. Hai dạng đặc trưng phái sinh từ KMeans:
+\begin{itemize}
+  \item \textbf{Distance features:} $d_k(x) = \lVert x - \mu_k \rVert$ cho mỗi $k=1,\dots,K$.
+  \item \textbf{Cluster ID:} biến hạng mục $c(x) = \arg\min_k \lVert x - \mu_k\rVert$.
+\end{itemize}
+
+\subsubsection{Phương pháp Elbow}
+
+Vẽ đường \textbf{WCSS} (hay \textit{inertia}) theo số cụm $K$:
+\[
+  \text{WCSS}(K) = \sum_{k=1}^{K}\sum_{x \in S_k} \lVert x - \mu_k \rVert^2
+\]
+$K$ tối ưu được chọn tại ``khuỷu tay'' (elbow) --- điểm mà việc tăng $K$ không còn giảm WCSS đáng kể.
+
+\subsubsection{Hệ số Silhouette}
+
+Đo chất lượng phân cụm cho từng điểm $i$:
+\[
+  s(i) = \dfrac{b(i) - a(i)}{\max\big(a(i), b(i)\big)}, \qquad s(i) \in [-1, 1]
+\]
+với $a(i)$ là khoảng cách trung bình từ $i$ đến các điểm cùng cụm, $b(i)$ là khoảng cách trung bình
+nhỏ nhất từ $i$ đến các điểm của cụm khác gần nhất. Silhouette score toàn cục là trung bình
+$s(i)$ trên toàn bộ mẫu. $s \to 1$: cụm tách biệt rõ; $s \to 0$: cụm chồng lấp; $s < 0$: gán sai
+cụm. Với dữ liệu E-Commerce, silhouette $=0.1183$ tại $K=5$ cho thấy ranh giới cụm chưa thật sắc
+nét, nhưng các cụm vẫn hữu ích để mô tả persona và bổ sung ngữ cảnh cho Risk Score.
+
+\subsection{Mô Hình Phân Loại}
+
+\subsubsection{Logistic Regression}
+
+Mô hình tuyến tính cho xác suất nhãn nhị phân, dùng hàm sigmoid để nén $\mathbb{R} \to [0,1]$:
+\[
+  P(y=1\mid x) = \sigma(w^\top x + b) = \dfrac{1}{1+e^{-(w^\top x + b)}}
+\]
+Tham số $w, b$ được học bằng cực đại hóa log-likelihood, tương đương tối thiểu hóa \textbf{Binary
+Cross-Entropy}:
+\[
+  \mathcal{L}(w,b) = -\dfrac{1}{n}\sum_{i=1}^n \Big[y_i \log \hat{y}_i + (1-y_i)\log(1-\hat{y}_i)\Big] + \lambda \lVert w \rVert_2^2
+\]
+với $\lambda \lVert w\rVert_2^2$ là $L_2$ regularization chống overfit. Đây là baseline tuyến
+tính (LR-Base, LR-Dist) trong pipeline e-commerce.
+
+\subsubsection{Decision Tree}
+
+Cây quyết định chia đệ quy không gian đặc trưng bằng cách chọn ngưỡng $(j,\tau)$ tối thiểu hóa độ
+``hỗn loạn'' (impurity) của hai node con. Với \textbf{Gini Impurity}:
+\[
+  G(t) = 1 - \sum_{k} p_k(t)^2
+\]
+hoặc \textbf{Entropy}:
+\[
+  H(t) = -\sum_k p_k(t)\log_2 p_k(t)
+\]
+với $p_k(t)$ là tỉ lệ lớp $k$ tại node $t$. Tại mỗi node, thuật toán chọn split tối đa hóa
+\textbf{Information Gain}:
+\[
+  IG(t, j, \tau) = G(t) - \dfrac{n_L}{n_t}G(t_L) - \dfrac{n_R}{n_t}G(t_R)
+\]
+DT-Clust là baseline phi tuyến đơn giản, dễ diễn giải nhưng dễ overfit (thể hiện qua Accuracy/F1
+thấp hơn rõ rệt so với ensemble trong Bảng kết quả).
+
+\subsubsection{Random Forest}
+
+Kỹ thuật \textbf{Bagging} (Bootstrap Aggregating): huấn luyện $B$ cây quyết định độc lập trên các
+mẫu bootstrap (lấy lại mẫu có hoàn lại) của tập train, mỗi cây chỉ xét một tập con ngẫu nhiên đặc
+trưng tại mỗi split (giảm tương quan giữa các cây). Dự đoán cuối là trung bình (regression) hoặc
+bầu chọn đa số/trung bình xác suất (classification):
+\[
+  \hat{P}(y=1\mid x) = \dfrac{1}{B}\sum_{b=1}^{B} P_b(y=1\mid x)
+\]
+Giảm phương sai (variance) so với một cây đơn lẻ nhờ lấy trung bình nhiều mô hình yếu tương quan
+thấp $\to$ RF-Clust đạt ROC-AUC rất cao (0.9975 ở E-Commerce) nhưng threshold cao bất thường (0.390)
+cho thấy hiện tượng \textit{under-calibration}.
+
+\subsubsection{XGBoost --- Extreme Gradient Boosting}
+
+Mô hình \textbf{Gradient Boosting} xây dựng tuần tự $T$ cây, mỗi cây sau học để sửa lỗi (residual
+theo gradient) của tổng các cây trước:
+\[
+  \hat{y}_i^{(t)} = \hat{y}_i^{(t-1)} + \eta \cdot f_t(x_i)
+\]
+với $\eta$ là learning rate. Hàm mục tiêu tại bước $t$ gồm hàm mất mát và regularization trên độ
+phức tạp cây:
+\[
+  \mathcal{L}^{(t)} = \sum_{i=1}^n \ell\big(y_i, \hat{y}_i^{(t-1)} + f_t(x_i)\big) + \Omega(f_t),
+  \qquad \Omega(f) = \gamma T + \tfrac{1}{2}\lambda \sum_{j=1}^{T} w_j^2
+\]
+với $T$ là số lá, $w_j$ trọng số lá $j$, $\gamma,\lambda$ là hệ số regularization. XGBoost xấp xỉ
+$\mathcal{L}^{(t)}$ bằng khai triển Taylor bậc 2 (dùng gradient $g_i$ và Hessian $h_i$ của hàm mất
+mát), cho phép tính \textbf{Gain} khi xét một split ứng viên:
+\[
+  \text{Gain} = \tfrac{1}{2}\left[\dfrac{(\sum_{i\in L} g_i)^2}{\sum_{i\in L} h_i + \lambda} +
+  \dfrac{(\sum_{i\in R} g_i)^2}{\sum_{i\in R} h_i + \lambda} -
+  \dfrac{(\sum_{i\in L\cup R} g_i)^2}{\sum_{i\in L\cup R} h_i + \lambda}\right] - \gamma
+\]
+XGBoost xử lý quan hệ phi tuyến và tương tác đặc trưng rất tốt, phù hợp với dữ liệu churn nơi hành
+vi của khách hàng thường không tác động độc lập. Trong pipeline e-commerce, XGB-Clust được chọn làm
+model production nhờ cân bằng tốt giữa ROC-AUC, F1, khả năng calibrate và khả năng tận dụng thêm
+ngữ cảnh phân cụm.
+
+\subsection{Tinh Chỉnh Siêu Tham Số --- Optuna}
+
+Optuna dùng thuật toán Bayesian Optimization theo cơ chế \textbf{TPE (Tree-structured Parzen
+Estimator)}: xây hai phân phối mật độ xác suất $\ell(x)$ (cho các thử nghiệm ``tốt'') và $g(x)$ (cho
+các thử nghiệm ``kém'') trên không gian siêu tham số, rồi chọn điểm thử tiếp theo tối đa hóa tỉ số:
+\[
+  x_{\text{next}} = \arg\max_x \dfrac{\ell(x)}{g(x)}
+\]
+Khác với Grid/Random Search (thử ngẫu nhiên/độc lập), TPE học dần từ lịch sử các trial trước để tập
+trung tìm kiếm vào vùng siêu tham số nhiều khả năng tối ưu, hiệu quả hơn khi số trial hạn chế. Trong
+pipeline e-commerce, nhóm dùng 40 trials để tinh chỉnh mô hình mà vẫn kiểm soát thời gian chạy.
+
+\subsection{Hiệu Chỉnh Xác Suất --- CalibratedClassifierCV}
+
+Một mô hình ``tốt'' về phân loại (AUC cao) không đồng nghĩa xác suất đầu ra $\hat{p}$ phản ánh đúng
+tần suất thật. \textbf{Platt Scaling} học một phép biến đổi sigmoid trên điểm số thô $f(x)$ của mô
+hình:
+\[
+  P_{\text{calibrated}}(y=1\mid x) = \dfrac{1}{1+\exp(A\cdot f(x) + B)}
+\]
+với $A,B$ học bằng cross-validation trên một phần dữ liệu giữ lại (\code{cv=5}). Mô hình được
+calibrate tốt khi đường \textbf{Calibration Curve} (xác suất dự đoán vs tần suất thực tế quan
+sát) gần với đường chéo $y=x$ --- đây là tiêu chí nhóm dùng để giải thích vì sao chọn XGB-Clust dù
+RF-Clust có AUC cao hơn.
+
+\subsection{Chỉ Số Đánh Giá Mô Hình}
+
+Từ ma trận nhầm lẫn (Confusion Matrix) với $TP, FP, FN, TN$:
+\[
+  \text{Accuracy} = \dfrac{TP+TN}{TP+FP+FN+TN}, \qquad
+  \text{Precision} = \dfrac{TP}{TP+FP}, \qquad
+  \text{Recall} = \dfrac{TP}{TP+FN}
+\]
+\[
+  F_1 = 2\cdot\dfrac{\text{Precision}\cdot\text{Recall}}{\text{Precision}+\text{Recall}}
+\]
+\textbf{ROC-AUC:} diện tích dưới đường cong ROC (\textit{True Positive Rate} vs \textit{False
+Positive Rate} khi quét ngưỡng phân loại từ $0$ đến $1$):
+\[
+  TPR = \dfrac{TP}{TP+FN}, \qquad FPR = \dfrac{FP}{FP+TN}, \qquad \text{AUC} = \int_0^1 TPR\, d(FPR)
+\]
+\textbf{PR-AUC:} diện tích dưới đường cong Precision--Recall, nhạy hơn ROC-AUC khi lớp dương là
+thiểu số (phù hợp với churn 16.8\%):
+\[
+  \text{PR-AUC} = \int_0^1 \text{Precision}(r)\, dr
+\]
+
+\subsection{Diễn Giải Mô Hình --- SHAP (SHapley Additive exPlanations)}
+
+SHAP áp dụng \textbf{giá trị Shapley} từ lý thuyết trò chơi hợp tác để phân bổ ``công bằng'' đóng góp
+của mỗi đặc trưng $j$ vào một dự đoán cụ thể $f(x)$. Với $N$ là tập toàn bộ đặc trưng:
+\[
+  \phi_j = \sum_{S \subseteq N \setminus \{j\}} \dfrac{|S|!\,(|N|-|S|-1)!}{|N|!}
+  \Big[f(S \cup \{j\}) - f(S)\Big]
+\]
+trong đó $f(S)$ là giá trị dự đoán kỳ vọng khi chỉ biết các đặc trưng trong tập con $S$. Tính chất
+quan trọng nhất là \textbf{tính cộng (additivity)}: tổng các $\phi_j$ cộng với giá trị nền (baseline)
+$\phi_0 = E[f(x)]$ đúng bằng dự đoán thật:
+\[
+  f(x) = \phi_0 + \sum_{j=1}^{|N|} \phi_j
+\]
+Vì tính $2^{|N|}$ tập con là không khả thi, nhóm dùng \textbf{TreeSHAP} --- thuật toán xấp xỉ chính
+xác (exact) giá trị Shapley cho mô hình dạng cây (XGBoost) trong thời gian đa thức bằng cách truy
+vết đường đi qua cây. Với bài toán churn, SHAP giúp xác định các đặc trưng đẩy xác suất rời bỏ lên
+cao như \code{Tenure}, \code{Complain}, \code{DaySinceLastOrder} hoặc các biến liên quan đến giá trị
+mua hàng.
+
+\subsection{Phân Tích Sống Còn --- Kaplan-Meier \& Log-rank Test}
+
+\subsubsection{Kaplan-Meier Estimator}
+
+Ước lượng \textbf{hàm sống còn} $S(t)$ --- xác suất một khách hàng ``sống sót'' (chưa churn) qua thời
+điểm $t$ --- theo phương pháp non-parametric, xử lý đúng dữ liệu \textit{censored} (khách chưa
+churn tại thời điểm quan sát cuối):
+\[
+  \hat{S}(t) = \prod_{t_i \leq t} \left(1 - \dfrac{d_i}{n_i}\right)
+\]
+với $t_i$ là các thời điểm xảy ra event (churn), $d_i$ là số event tại $t_i$, $n_i$ là số đối
+tượng ``có nguy cơ'' (at risk) ngay trước $t_i$. Trong pipeline, \code{duration = Tenure},
+\code{event = Churn}.
+
+\subsubsection{Log-rank Test}
+
+Kiểm định giả thuyết $H_0$: các nhóm (cluster) có hàm sống còn giống nhau, dựa trên so sánh số
+event quan sát $O_{k}$ và kỳ vọng $E_k$ tại mỗi nhóm $k$ qua tất cả các thời điểm event:
+\[
+  \chi^2 = \sum_{k} \dfrac{(O_k - E_k)^2}{E_k} \;\sim\; \chi^2_{(\text{df}=K-1)}
+\]
+$p$-value nhỏ ($8.69\times 10^{-9}$ trong báo cáo) bác bỏ $H_0$ --- xác nhận 4 cluster có
+\textbf{tốc độ rời bỏ} khác biệt có ý nghĩa thống kê, bổ sung chiều thông tin ``khi nào'' bên cạnh
+``có churn hay không'' của mô hình phân loại.
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Data Dictionary}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{E-Commerce Customer Churn Dataset}
+
+\textbf{Nguồn:} Kaggle --- E-Commerce Customer Churn Dataset\\
+\textbf{Kích thước:} 5\,630 dòng $\times$ 20 cột · Churn rate: \textbf{16.8\%}
+
+\begin{longtable}{llp{5cm}p{4.5cm}}
+  \toprule
+  \textbf{Cột} & \textbf{Kiểu} & \textbf{Mô tả} & \textbf{Ghi chú} \\
+  \midrule
+  \endhead
+  \code{CustomerID}                 & int        & Định danh khách hàng & Unique key \\
+  \code{Churn}                      & int (0/1)  & Đã churn trong kỳ? & \textbf{Target} \\
+  \code{Tenure}                     & float      & Số tháng là thành viên & 4.69\% NaN $\to$ MAR/MNAR \\
+  \code{CityTier}                   & cat        & Tier thành phố (1/2/3) & Chuyển về object \\
+  \code{WarehouseToHome}            & float      & Khoảng cách kho $\to$ nhà (km) & 4.46\% NaN \\
+  \code{HourSpendOnApp}             & float      & Giờ dùng app/tuần & 4.53\% NaN \\
+  \code{NumberOfDeviceRegistered}   & int        & Số thiết bị đã đăng ký & \\
+  \code{PreferedOrderCat}           & cat        & Danh mục mua sắm ưa thích & Mobile Phone / Laptop / Fashion / \ldots \\
+  \code{SatisfactionScore}          & int        & Điểm hài lòng (1--5) & \\
+  \code{MaritalStatus}              & cat        & Tình trạng hôn nhân & Single / Married / Divorced \\
+  \code{NumberOfAddress}            & int        & Số địa chỉ giao hàng đã lưu & \\
+  \code{Complain}                   & int (0/1)  & Có phàn nàn trong kỳ? & Liên kết mạnh nhất với churn \\
+  \code{OrderAmountHikeFromlastYear}& float      & \% tăng giá trị đơn so với năm ngoái & 4.71\% NaN \\
+  \code{CouponUsed}                 & float      & Số coupon đã dùng & 4.55\% NaN \\
+  \code{OrderCount}                 & float      & Số đơn hàng trong kỳ & 4.58\% NaN \\
+  \code{DaySinceLastOrder}          & float      & Số ngày kể từ đơn cuối & 5.45\% NaN $\to$ MCAR \\
+  \code{CashbackAmount}             & float      & Tổng cashback nhận được (\$) & Feature quan trọng trong Risk Score \\
+  \code{PreferredLoginDevice}       & cat        & Thiết bị đăng nhập ưa thích & Mobile Phone / Computer \\
+  \code{PreferredPaymentMode}       & cat        & Phương thức thanh toán ưa thích & Credit Card / COD / UPI / \ldots \\
+  \code{Gender}                     & cat        & Giới tính & Male / Female \\
+  \bottomrule
+\end{longtable}
+
+\textbf{Composite features được tạo thêm:}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{lXX}
+  \toprule
+  \textbf{Feature} & \textbf{Công thức} & \textbf{Ý nghĩa} \\
+  \midrule
+  \code{device\_per\_tenure}  & \code{NumberOfDeviceRegistered / (Tenure + 1)} & Mật độ thiết bị theo thời gian \\
+  \code{cashback\_per\_order} & \code{CashbackAmount / (OrderCount + 1)} & Giá trị cashback mỗi đơn \\
+  \code{inactivity\_ratio}    & \code{DaySinceLastOrder / (Tenure + 1)} & Tỷ lệ không hoạt động \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Phương Pháp}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Pipeline E-Commerce Churn Alert (9 Steps)}
+
+\begin{lstlisting}
+Raw Data (Excel 5,630 rows x 20 cols)
+         |
+         v
+[Step 1]  Data Cleaning -- typo, dtype correction
+         |
+         v
+[Step 2]  Missing Data Analysis -- MCAR/MAR/MNAR classification
+         |
+         v
+[Step 3]  EDA -- Cramer's V, Point-Biserial, Pearson heatmap
+         |
+         v
+[Step 4]  RFM Segmentation -- SQLite NTILE(5) window function
+         |
+    +----+-----------------------------+
+    v                                  v
+[Step 5] Tree Path              [Step 5b] Linear Path
+  KNN Impute -> OHE -> SMOTE      IQR Clip -> OHE -> MinMaxScale
+  -> KMeans FE (K=5)              -> KNN Impute -> Chi2 Selection
+    |                                          |
+    +------------------+-----------------------+
+                       v
+           [Step 6]  Modelling (6 models)
+                       |
+                       v
+           [Step 7]  Cluster Profiling (5 Personas)
+                       |
+                       v
+           [Step 8]  Risk Scoring
+           RiskScore = 0.7 x P(churn) + 0.3 x cashback_pct
+                       |
+                       v
+           [Step 9]  Kaplan-Meier Survival Analysis
+                       |
+                       v
+    RiskScore + Cluster + Survival -> Action Matrix (P1-P5)
+\end{lstlisting}
+
+\subsubsection{Step 1 --- Data Cleaning}
+
+Load Excel (sheet \code{E Comm}) $\to$ 5\,630 rows $\times$ 20 cột. Chuẩn hóa typo categorical:
+
+\begin{center}
+\begin{tabular}{ll}
+  \toprule
+  \textbf{Trước} & \textbf{Sau} \\
+  \midrule
+  \code{"Mobile Phone"}, \code{"Phone"} & \code{"Mobile"} \\
+  \code{"CC"} & \code{"Credit Card"} \\
+  \code{"COD"} & \code{"Cash on Delivery"} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Step 2 --- Missing Data Analysis}
+
+Phân loại MCAR/MAR/MNAR bằng cách so sánh churn rate giữa nhóm có và không có missing
+($|\Delta\text{churn}| > 5\% \to$ MAR/MNAR):
+
+\begin{center}
+\begin{tabularx}{\textwidth}{lllX}
+  \toprule
+  \textbf{Cột} & \textbf{Missing} & \textbf{Loại} & \textbf{Xử lý} \\
+  \midrule
+  \code{DaySinceLastOrder}           & 5.45\% & MCAR     & KNN Imputer $k=5$ \\
+  \code{OrderAmountHikeFromlastYear} & 4.71\% & MAR/MNAR & KNN Imputer $k=5$ \\
+  \code{Tenure}                      & 4.69\% & MAR/MNAR & KNN Imputer $k=5$ \\
+  \code{OrderCount}                  & 4.58\% & MAR/MNAR & KNN Imputer $k=5$ \\
+  \code{CouponUsed}                  & 4.55\% & MAR/MNAR & KNN Imputer $k=5$ \\
+  \code{HourSpendOnApp}              & 4.53\% & MAR/MNAR & KNN Imputer $k=5$ \\
+  \code{WarehouseToHome}             & 4.46\% & MAR/MNAR & KNN Imputer $k=5$ \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{quote}
+  Phần lớn missing là MAR/MNAR $\to$ dùng \textbf{KNN Imputer ($k=5$)} thay vì mean/median để
+  bảo toàn cấu trúc tương quan.
+\end{quote}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{02_missing_matrix.png}
+  \caption{Ma trận missing — 7 cột thiếu dữ liệu (4.46--5.45\%), không xếp theo dòng/cột cố định
+    $\to$ không phải lỗi thu thập hệ thống.}
+  \label{fig:ecom-missing}
+\end{figure}
+
+\subsubsection{Step 3 --- EDA}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{lX}
+  \toprule
+  \textbf{Phân tích} & \textbf{Phát hiện chính} \\
+  \midrule
+  Phân bố nhãn          & Mất cân bằng nặng: 83.2\% retained vs \textbf{16.8\% churn} $\to$ cần SMOTE \\
+  Churn theo Tenure      & Churn cao nhất ở 0--3 tháng đầu ($\approx 35\%$), giảm dần theo thời gian \\
+  Churn theo SatisfactionScore & Score 1 $\to$ churn $\approx 25\%$; Score 5 $\to$ churn $\approx 10\%$ \\
+  Cramér's V             & \code{Complain} liên kết mạnh nhất với churn ($V \approx 0.33$) \\
+  Point-Biserial         & Top features: \code{Tenure} ($r=-0.35$), \code{CashbackAmount}, \code{SatisfactionScore} \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{03_class_distribution.png}
+    \caption{Phân bố nhãn Churn}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{03_pearson_heatmap.png}
+    \caption{Pearson heatmap}
+  \end{subfigure}
+
+  \vspace{0.5em}
+
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{03_cramers_v.png}
+    \caption{Cramér's V — biến categorical}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{03_point_biserial.png}
+    \caption{Point-Biserial correlation}
+  \end{subfigure}
+  \caption{EDA — E-Commerce Churn Dataset}
+  \label{fig:ecom-eda}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{03_tenure_satisfaction.png}
+    \caption{Churn theo Tenure và SatisfactionScore}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{03_cashback_churn.png}
+    \caption{Cashback Amount theo nhóm Churn}
+  \end{subfigure}
+  \caption{Khách churn nhận cashback trung bình thấp hơn rõ rệt — xác nhận vai trò của
+    \code{CashbackAmount} trong Risk Score.}
+  \label{fig:ecom-tenure-cashback}
+\end{figure}
+
+\subsubsection{Step 4 --- RFM Segmentation}
+
+Dùng \textbf{SQLite in-memory + NTILE(5)} window function để chấm điểm R/F/M từ 1--5:
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Chiều} & \textbf{Mapping} & \textbf{Hướng điểm} \\
+  \midrule
+  \textbf{R} (Recency)   & \code{DaySinceLastOrder} & Ít ngày $\to$ điểm cao \\
+  \textbf{F} (Frequency) & \code{OrderCount}         & Nhiều đơn $\to$ điểm cao \\
+  \textbf{M} (Monetary)  & \code{CashbackAmount}     & Nhiều cashback $\to$ điểm cao \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Segment} & \textbf{Điều kiện} & \textbf{Số KH} \\
+  \midrule
+  Champions        & $F \geq 4$ và $M \geq 4$ & 1\,505 \\
+  Recent Customers & $R \geq 4$ và $F < 3$   & 1\,319 \\
+  Hibernating      & Còn lại                  & 1\,270 \\
+  Loyal            & $F \geq 3$ và $M \geq 3$ & 1\,244 \\
+  At Risk          & $R \leq 2$ và $F \geq 3$ & 292    \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{quote}
+  RFM standalone ROC-AUC = \textbf{0.5503} --- yếu khi dùng độc lập, nhưng \code{rfm\_segment}
+  và \code{rfm\_total} là input features quan trọng cho model chính.
+\end{quote}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{04_rfm_churn_rate.png}
+    \caption{Churn rate theo RFM Segment}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{04_rfm_segments_pie.png}
+    \caption{Phân bố RFM Segment}
+  \end{subfigure}
+  \caption{Kết quả phân đoạn RFM — 5 segments từ SQLite NTILE(5)}
+  \label{fig:ecom-rfm}
+\end{figure}
+
+\subsubsection{Step 5 --- Dual Preprocessing Pipeline}
+
+\textbf{Tree Path:} KNN Impute $\to$ OHE $\to$ SMOTE (3\,746$\to$3\,746 each class) $\to$ KMeans FE
+($K=5$, silhouette $= 0.1183$)
+\begin{itemize}
+  \item Strategy A: 4 khoảng cách centroid (\code{X\_train\_dist})
+  \item Strategy B: 1 cột \code{kmeans\_cluster\_id} (\code{X\_train\_clust})
+\end{itemize}
+
+\textbf{Linear Path:} IQR clip ($\times 1.5$) $\to$ OHE $\to$ MinMaxScale $\to$ KNN Impute $\to$
+Chi$^2$ ($p < 0.05$) $\to$ SMOTE
+\begin{itemize}
+  \item Base: \textbf{23/35 features} giữ lại
+  \item Dist: \textbf{25/39 features} (thêm 4 KMeans distance features)
+\end{itemize}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{05_elbow_silhouette.png}
+    \caption{Elbow \& Silhouette — KMeans $K=5$}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{05b_chi2_scores.png}
+    \caption{Chi$^2$ feature scores (Linear path)}
+  \end{subfigure}
+  \caption{Dual preprocessing — lựa chọn $K$ và feature selection}
+  \label{fig:ecom-preproc}
+\end{figure}
+
+\subsubsection{Step 6 --- Modelling}
+
+6 models song song: XGB-Base, XGB-Clust, RF-Clust, DT-Clust, LR-Base, LR-Dist.\\
+XGB-Base tuned bằng \textbf{Optuna (40 trials, CV=5)}: \code{n\_estimators=463, max\_depth=8,
+lr=0.0834, subsample=0.679}.\\
+Tất cả được calibrate bằng \code{CalibratedClassifierCV(cv=5)}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{06b_model_comparison.png}
+  \caption{So sánh 6 models — E-Commerce pipeline}
+  \label{fig:ecom-model-cmp}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{06_roc_curve.png}
+    \caption{ROC Curve}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{06_confusion_matrix.png}
+    \caption{Confusion Matrix}
+  \end{subfigure}
+
+  \vspace{0.5em}
+
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{06_calibration_curve.png}
+    \caption{Calibration Curve — xác nhận model calibrate tốt}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{06_shap_bar.png}
+    \caption{SHAP Bar — Global Importance}
+  \end{subfigure}
+  \caption{Đánh giá model — E-Commerce Churn Alert}
+  \label{fig:ecom-model-eval}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{06_shap_summary.png}
+  \caption{SHAP Summary Plot — phân phối giá trị SHAP theo feature}
+  \label{fig:ecom-shap-summary}
+\end{figure}
+
+\subsubsection{Step 7 --- Cluster Profiling}
+
+KMeans $K=5$ fit trên 4\,504 pre-SMOTE training samples. Profile 5 personas từ test set (1\,126 KH)
+--- xem Mục~\ref{sec:cluster-ecom}.
+
+\subsubsection{Step 8 --- Risk Scoring}
+
+\begin{lstlisting}
+RiskScore = normalize( 0.7 x P(churn) + 0.3 x (CashbackAmount / OrderCount) )
+\end{lstlisting}
+
+Phân ngưỡng quintile: Very Low / Low / Medium / High / Critical (mỗi tier $\approx 20\%$).
+
+\subsubsection{Step 9 --- Kaplan-Meier Survival Analysis}
+
+\code{lifelines.KaplanMeierFitter} với \code{event=Churn}, \code{duration=Tenure}. Log-rank test
+kiểm định sự khác biệt giữa 4 clusters --- xem Mục~\ref{sec:survival}.
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Kết Quả}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Kết Quả E-Commerce Churn Alert}
+
+\subsubsection{Model Comparison}
+
+\begin{center}
+\begin{tabular}{llllll}
+  \toprule
+  \textbf{Model} & \textbf{Accuracy} & \textbf{F1} & \textbf{ROC-AUC} & \textbf{PR-AUC} & \textbf{Threshold} \\
+  \midrule
+  \textbf{XGB-Base}     & 0.9591          & 0.8889          & 0.9799          & 0.9490          & 0.053 \\
+  RF-Clust              & 0.9796          & 0.9421          & \textbf{0.9975} & \textbf{0.9869} & 0.390 \\
+  \textbf{XGB-Clust} $\star$ & 0.9316 & 0.8230     & 0.9743          & 0.9340          & 0.075 \\
+  DT-Clust              & 0.8055          & 0.6178          & 0.9197          & 0.7761          & 0.091 \\
+  LR-Dist               & 0.8446          & 0.6479          & 0.9042          & 0.7374          & 0.501 \\
+  LR-Base               & 0.8579          & 0.6507          & 0.8971          & 0.7311          & 0.552 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{$\star$ Production model: XGB-Clust} --- tích hợp cluster context, cân bằng tốt giữa
+Precision (73.1\%) và Recall (94.2\%), ROC-AUC $= 0.974$.
+
+\begin{quote}
+  \textit{Lý do không chọn RF-Clust dù ROC-AUC cao nhất (0.9975): RF-Clust có threshold 0.390
+  (cao hơn nhiều so với 0.053--0.075 của XGB), cho thấy mô hình kém calibrate và dễ miss nhóm
+  churn probability thấp nhưng thực sự churn.}
+\end{quote}
+
+\subsubsection{Cluster Profiling --- 5 Personas}
+\label{sec:cluster-ecom}
+
+\begin{center}
+\begin{tabular}{llllll}
+  \toprule
+  \textbf{Cluster} & \textbf{Persona} & \textbf{Tenure} & \textbf{Cashback} & \textbf{Churn Rate} & \textbf{Size} \\
+  \midrule
+  C0 & Khách Hàng Thân Thiết & 11.24 tháng & \$187.87 & 18\% & 134 KH \\
+  C1 & Mua Sắm Thường Xuyên   & 9.91 tháng  & \$173.28 & 23\% & 224 KH \\
+  C2 & Người Mua Thụ Động     & 8.52 tháng  & \$175.06 & 24\% & 261 KH \\
+  C3 & Khách Hàng Ổn Định     & 10.73 tháng & \$177.55 & 12\% & 261 KH \\
+  C4 & VIP Loyal Customer     & 11.12 tháng & \$173.98 & 9\%  & 246 KH \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{quote}
+  \textbf{Quan sát C2:} Nhóm "Người Mua Thụ Động" (Cluster 2) có churn rate cao nhất (24\%) mặc dù
+  Tenure không phải là thấp nhất. Đây là khách hàng ít tương tác, cần can thiệp bằng các offer cá nhân hóa.
+  Ngược lại, C4 (VIP Loyal) có churn rate thấp nhất (9\%) --- nhóm này cần giữ chân bằng các quyền lợi exclusive.
+\end{quote}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{07_cluster_profiling.png}
+  \caption{Cluster Profiling — 5 Personas E-Commerce}
+  \label{fig:ecom-cluster}
+\end{figure}
+
+\subsubsection{Survival Analysis}
+\label{sec:survival}
+
+\textbf{Log-rank test:} $\chi^2 \approx 40.42$, \textbf{$p$-value $\approx 8.69 \times 10^{-9}$} $\to$ Rất có ý
+nghĩa thống kê.
+
+Cluster 2 có survival curve giảm nhanh nhất trong giai đoạn 0--6 tháng --- rời bỏ sớm trong vòng đời. Cluster 4 (VIP) thể hiện survival cao nhất.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{08_km_by_cluster.png}
+  \caption{Kaplan-Meier Survival Curve theo Cluster — Log-rank $p = 8.69 \times 10^{-9}$}
+  \label{fig:ecom-km}
+\end{figure}
+
+\subsubsection{Risk Distribution \& Action Matrix}
+
+\begin{center}
+\begin{tabularx}{\textwidth}{lllX}
+  \toprule
+  \textbf{Risk Tier} & \textbf{Ngưỡng} & \textbf{Số KH} & \textbf{Hành động} \\
+  \midrule
+  Critical  & $> 0.4864$          & 225 & \textbf{P1 --- Can thiệp ngay lập tức} \\
+  High      & $0.3438$--$0.4864$  & 225 & P2 --- Trong 24--48h \\
+  Medium    & $0.2546$--$0.3438$  & 225 & P3 --- Tuần tới \\
+  Low       & $0.1403$--$0.2546$  & 225 & P4 --- Tháng tới \\
+  Very Low  & $\leq 0.1403$       & 226 & P5 --- Chăm sóc tiêu chuẩn \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Kết Luận}
+% ══════════════════════════════════════════════════════════════════════════════
+
+Pipeline E-Commerce Churn Alert xây dựng thành công hệ thống phân tầng rủi ro đa chiều cho 5\,630
+khách hàng:
+
+\begin{itemize}
+  \item \textbf{Model XGB-Clust} đạt ROC-AUC $= 0.974$, F1 $= 0.823$ --- hiệu quả cao trong điều
+    kiện dữ liệu mất cân bằng nặng (16.8\% churn).
+  \item \textbf{5 clusters} phân tách 5 hành vi mua sắm khác nhau: từ VIP Loyal (C4: 9\% churn) đến
+    Passive Buyers (C2: 24\% churn). Phân đoạn rõ ràng hỗ trợ CSKH trong targeting.
+  \item \textbf{Kaplan-Meier} xác nhận sự khác biệt survival curve có ý nghĩa thống kê cao
+    ($p \approx 8.69 \times 10^{-9}$), cung cấp thêm chiều ``tốc độ rời bỏ'' ngoài xác suất churn.
+  \item \textbf{Action Matrix P1--P5} tích hợp cả 3 trụ cột (RiskScore + Cluster + Survival), cho
+    phép CSKH ưu tiên chính xác và cá nhân hóa hành động theo từng nhóm hành vi.
+\end{itemize}
+
+\textbf{Nhóm nguy hiểm tuyệt đối:} \code{Critical Risk + Cluster 2 (Passive Buyer) + Tenure < 3 tháng} --- tất cả
+dấu hiệu xấu đồng thời, cần can thiệp trong vài giờ.
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Ưu \& Nhược Điểm}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\subsubsection*{Ưu điểm}
+
+\begin{itemize}
+  \item \textbf{Pipeline đa tầng toàn diện:} Kết hợp cả 4 góc nhìn (RFM phân đoạn hành vi, ML dự
+    đoán xác suất, KMeans phân nhóm, Kaplan-Meier đo tốc độ rời bỏ) --- mỗi bước bổ sung thông tin
+    mà bước trước không có.
+  \item \textbf{Dual preprocessing path:} Tách biệt rõ ràng tree vs linear pipeline, đảm bảo đúng
+    methodology cho từng nhóm model.
+  \item \textbf{Leakage-free KMeans:} KMeans chỉ fit trên pre-SMOTE training data, test set dùng
+    \code{predict()} --- không có data leakage.
+  \item \textbf{Risk Score thực tế:} Tích hợp \code{cashback\_pct} vào Risk Score phản ánh giá trị
+    kinh tế của từng khách, không chỉ xác suất churn thuần túy.
+  \item \textbf{Action Matrix có survival context:} Điều chỉnh ưu tiên theo Tenure
+    (onboarding vs retention vs VIP) --- phù hợp hơn thực tế CSKH.
+\end{itemize}
+
+\subsubsection*{Nhược điểm}
+
+\begin{itemize}
+  \item \textbf{Tập dữ liệu nhỏ (5\,630 KH):} Silhouette score KMeans chỉ đạt 0.1183 (khá thấp)
+    --- ranh giới giữa 5 clusters không sắc nét, dễ bị ảnh hưởng bởi outlier.
+  \item \textbf{\code{cashback\_per\_order} là proxy không hoàn hảo:} Không có dữ liệu doanh thu
+    hay LTV thực tế --- cashback có thể không phản ánh đúng giá trị kinh tế từng khách.
+  \item \textbf{SMOTE tạo synthetic samples:} Trong tập nhỏ, SMOTE có thể tạo các điểm synthetic
+    quá gần nhau, làm model overfit trên minority class.
+  \item \textbf{RFM standalone yếu (AUC $= 0.55$):} Nếu dùng RFM độc lập để phân loại churn, hiệu
+    quả rất thấp --- chỉ có giá trị khi kết hợp với ML.
+  \item \textbf{Không có SHAP per-cluster:} SHAP chỉ tính global, chưa phân tích driver của từng
+    cluster riêng biệt.
+\end{itemize}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\section{Hướng Phát Triển Tương Lai}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\textbf{a. Đưa vào Production với MLflow / Model Registry}
+\begin{itemize}
+  \item Version control models, auto-retrain theo schedule (monthly/quarterly).
+  \item A/B test giữa model versions trước khi deploy toàn phần.
+\end{itemize}
+
+\textbf{b. Feature Store \& Online Scoring}
+\begin{itemize}
+  \item Tách biệt batch scoring (monthly report) và real-time scoring (trigger khi có event: mua
+    hàng mới / khảo sát mới).
+  \item Pipeline inference $< 100$ms với serving framework (FastAPI + Redis cache).
+\end{itemize}
+
+\textbf{c. Explainability Dashboard}
+\begin{itemize}
+  \item Giao diện Streamlit/Dash hiển thị SHAP driver cho từng KH --- CSKH không cần đọc CSV.
+  \item Filter theo Risk Tier, Cluster, khoảng thời gian.
+\end{itemize}
+
+\textbf{d. Causal Inference}
+\begin{itemize}
+  \item Thay thế ``correlation $\to$ action'' bằng ``uplift modeling'' --- đo lường xem can thiệp
+    nào thực sự tạo ra sự khác biệt (treated vs control).
+  \item Áp dụng Double ML hoặc causal forest để ước lượng CATE (Conditional Average Treatment
+    Effect).
+\end{itemize}
+
+\textbf{e. Thu thập thêm dữ liệu}
+\begin{itemize}
+  \item Dữ liệu click-stream, session time, cart abandonment --- enrich feature space đáng kể.
+  \item Dữ liệu revenue thực tế thay vì cashback proxy $\to$ Risk Score chính xác hơn.
+\end{itemize}
+
+\textbf{f. Cải thiện KMeans}
+\begin{itemize}
+  \item Thử Gaussian Mixture Model (GMM) để xử lý cluster overlap tốt hơn (silhouette hiện tại chỉ
+    0.1352).
+  \item Thêm SHAP per-cluster analysis để hiểu driver churn riêng của từng nhóm khách hàng.
+\end{itemize}
+
+\textbf{g. Time-series Features}
+\begin{itemize}
+  \item Hiện tại chỉ có snapshot feature. Tạo thêm rolling features (trend 3 tháng, seasonal
+    pattern) nếu có transaction history.
+\end{itemize}
+
+\textbf{h. Semi-supervised Learning}
+\begin{itemize}
+  \item Dữ liệu có label churn thực sự khá ít (948 KH churn trong 5\,630). Thử semi-supervised
+    approach để tận dụng unlabeled data từ các kỳ khác.
+\end{itemize}
+
+% ══════════════════════════════════════════════════════════════════════════════
+\newpage
+\appendix
+\section{Phụ Lục --- Artifacts}
+% ══════════════════════════════════════════════════════════════════════════════
+
+\begin{center}
+\begin{tabularx}{\textwidth}{llX}
+  \toprule
+  \textbf{Loại} & \textbf{File} & \textbf{Mô tả} \\
+  \midrule
+  Model & \code{models/E\_Commer\_Data/xgb\_clust\_model.pkl} & Production model \\
+  Model & \code{models/E\_Commer\_Data/kmeans\_fe\_model.pkl} & KMeans $K=5$ \\
+  Model & \code{models/E\_Commer\_Data/risk\_score\_meta.pkl} & Quintile thresholds \\
+  Data  & \code{data/E\_Commer\_Data/model\_comparison.csv}  & 6-model metrics \\
+  Data  & \code{data/E\_Commer\_Data/cluster\_summary.csv}   & 5 personas \\
+  Data  & \code{data/E\_Commer\_Data/targeted\_action\_list.csv} & Action list đầy đủ \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\vfill
+\begin{center}
+  \small\itshape
+  Báo cáo tổng hợp --- E-Commerce Churn Alert Pipeline\\
+  XGB-Clust ROC-AUC = 0.974 $\mid$ $K=5$ $\mid$ Log-rank $p \approx 8.69 \times 10^{-9}$
+\end{center}
+
+\end{document}
